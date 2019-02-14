@@ -162,11 +162,11 @@ Some important things here:
 - `providerId`: name of the provider to use to run the tests. Make sure the name of the provider is unique. If not, the provider being used to run the test is undefined,
 - `virtualUserId`: name of the thread group associated to the given load policy. The name must be unique as stated before, otherwise the thread group associated is undefined.
 
-There are [many possible configurations](/runtime/edit-scenario/). For now, the best way to create a `scenario.json` is:
+There are [many possible configurations](https://doc.octoperf.com/runtime/edit-scenario/). For now, the best way to create a `scenario.json` is:
 
 - Login on OctoPerf,
 - Upload your JMX Script to create the virtual user profiles,
-- [Create a scenario](/runtime/edit-scenario/) with the configuration you want,
+- [Create a scenario](https://doc.octoperf.com/runtime/) with the configuration you want,
 - Open the web developer console of your browser (usually by hitting `F12`), and go to network tab to see http requests. Filter by type and select `XHR`,
 - Reopen the scenario to initiate a GET request to the scenario json,
 - Locate the request in the developer console and copy the response from the server,
