@@ -24,3 +24,4 @@ deploy: clean
 
 version:
 	$(MVN) versions:set -DnewVersion=$(VERSION)
+	rm -f **/pom.xml.versionsBackup

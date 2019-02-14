@@ -26,7 +26,6 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.release.version>11</java.release.version>
     <sonar.java.source>${java.release.version}</sonar.java.source>
-    <maven.deploy.skip>true</maven.deploy.skip>
     <deployPath>${project.build.directory}/mvn-repo</deployPath>
 
     <commons.compress.version>1.18</commons.compress.version>

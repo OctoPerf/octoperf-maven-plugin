@@ -11,10 +11,6 @@
   <packaging>maven-plugin</packaging>
   <artifactId>octoperf-maven-plugin</artifactId>
 
-  <properties>
-    <maven.deploy.skip>false</maven.deploy.skip>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.octoperf</groupId>
