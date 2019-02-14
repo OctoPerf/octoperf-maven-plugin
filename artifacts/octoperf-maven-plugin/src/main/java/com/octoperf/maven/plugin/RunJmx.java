@@ -1,6 +1,7 @@
 package com.octoperf.maven.plugin;
 
 import com.google.common.collect.ImmutableSet;
+import com.octoperf.Application;
 import com.octoperf.entity.analysis.report.BenchReport;
 import com.octoperf.entity.analysis.report.graph.MetricValues;
 import com.octoperf.entity.runtime.BenchResult;
@@ -71,7 +72,7 @@ public class RunJmx extends AbstractMojo {
     System.setProperty("serverUrl", serverUrl);
     final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
     context.setEnvironment(new StandardEnvironment());
-    context.register(MavenPluginConfig.class);
+    context.register(Application.class);
     context.refresh();
 
     final BenchResults benchResults = context.getBean(BenchResults.class);
