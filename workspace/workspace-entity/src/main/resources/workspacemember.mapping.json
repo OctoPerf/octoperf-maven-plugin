@@ -1,0 +1,11 @@
+{
+  "dynamic": false,
+  "properties": {
+    "userId": {
+      "type": "keyword"
+    },
+    "workspaceId": {
+      "type": "keyword"
+    }
+  }
+}
