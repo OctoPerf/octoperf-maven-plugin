@@ -120,7 +120,6 @@ public class RunJmx extends AbstractMojo {
       final String reportUrl = reports.getReportUrl(
         serverUrl,
         workspaceId,
-        benchResult.getResultProjectId(),
         benchReport
       );
       log.info("Bench Report: " + reportUrl);
