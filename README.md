@@ -9,7 +9,7 @@ OctoPerf Maven plugin has multiple advantages:
 
 The maven plugin is distributed via [OctoPerf Maven Repository](https://github.com/OctoPerf/maven-repository) hosted on GitHub.
 
-**Current version**: `1.0.0-SNAPSHOT`
+**Current version**: `1.0.0`
 
 ## Goals Overview
 
@@ -19,7 +19,7 @@ The OctoPerf plugin has the following goals:
 
 ## System Requirements
 
-he following specifies the minimum requirements to run this Maven plugin:
+The following specifies the minimum requirements to run this Maven plugin:
 
 |  Name |   Description      |
 |-------|-----|
@@ -54,7 +54,7 @@ You should specify the version in your project's plugin configuration:
       <plugin>
         <groupId>com.octoperf</groupId>
         <artifactId>octoperf-maven-plugin</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <configuration>
           <!-- See configuration below -->
           ...
@@ -83,7 +83,7 @@ You should specify the version in your project's plugin configuration:
 
 ### octoperf:run
 
-**Full Name**: com.octoperf:octoperf-maven-plugin:1.0.0-SNAPSHOT
+**Full Name**: `com.octoperf:octoperf-maven-plugin:1.0.0`
 **Description**:
 
 Goal which uploads and runs your JMeter JMX script on OctoPerf Load Testing Platform. It performs the following steps: 
@@ -93,20 +93,6 @@ Goal which uploads and runs your JMeter JMX script on OctoPerf Load Testing Plat
 - A scenario is created using the `scenario.json` provided by the goal configuration,
 - The scenario is then run,
 - The plugin waits until the test finishes and downloads JMeter Logs and JTL files if any found.
-
-### File Structure
-
-Here is the base file structure you have:
-
-- `pom.xml`: Maven main configuration file,
-- `script.jmx`: your JMeter script.
-- `src/main/resources`: resources folder containing the files linked to your JMeter script like CSV files,
-- `scenario.json`: the scenario defines the user profiles to run and their load policies,
-- `target/junit-report.xml`: the JUnit report is downloaded once the test is finished. It reflects the results for all the containers within your JMeter script,
-- `target/logs`: JMeter logs are downloaded and decompressed in this folder at the end of the test,
-- `target/jtls`: JMeter JTL files are downloaded and decompressed in this folder at the end of the test.
-
-Most of the configurations above can be overriden in maven plugin configuration to fit your needs. Before diving into how to configure the plugin, let's see how it works.
 
 ### Parameters
 
@@ -124,7 +110,9 @@ Let's see all the configuration involved here:
 | `isDownloadLogs` | `String` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
 | `isDownloadJTLs` | `String` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
 
-### JMeter Script
+### Parameter Details
+
+#### `<jmxFile>`
 
 The JMeter script must comply the following rules:
 
@@ -132,7 +120,8 @@ The JMeter script must comply the following rules:
 - The name of each thread group will be used in the `scenario.json` to link the load policies to the thread groups.
 - **CSV Dataset configurations** are imported along with the thread groups. Prefer lowercase filenames with no special characters.
 
-### Scenario Json
+#### `<scenarioFile>`
+
 
 Here is a sample `scenario.json` file.
 
@@ -167,12 +156,7 @@ This is a very simple scenario configured as following:
 - Run a 5min test (300sec), starting with 1 concurrent user and ramping up to `10` concurrent users after 5mins,
 - the played thread group is `THREAD_GROUP_NAME`.
 
-Some important things here:
-
-- `providerId`: name of the provider to use to run the tests. Make sure the name of the provider is unique. If not, the provider being used to run the test is undefined,
-- `virtualUserId`: name of the thread group associated to the given load policy. The name must be unique as stated before, otherwise the thread group associated is undefined.
-
-There are [many possible configurations](https://doc.octoperf.com/runtime/edit-scenario/). For now, the best way to create a `scenario.json` is:
+**How to Create Your Own scenario.json**
 
 - Login on OctoPerf,
 - Upload your JMX Script to create the virtual user profiles,
@@ -182,7 +166,15 @@ There are [many possible configurations](https://doc.octoperf.com/runtime/edit-s
 - Locate the request in the developer console and copy the response from the server,
 - You can use [JsonLint](https://jsonlint.com) to format the Json properly.
 
-Then, you need to replace the `virtualUserId` and `providerId` by the relevant names. The maven plugin will take care of doing the reverse work of replacing those names by their respective ids when uploading your script.
+Once you have your `scenario.json`, please make sure to configure the ids inside properly.
+
+**scenario.json Configuration**
+
+| Name | Type | Since | Description | Required | Default Value |
+|------|------|-------|-------------|----------|---------------|
+| `providerId` | `String` | `1.0.0` | **OctoPerf Provider Name** to use to run the tests. Make sure the name of the provider is unique. If not unique, the provider being used to run the test is undefined. | `true` | |
+| `virtualUserId` | `String` | `1.0.0` | T*thread Group Name** associated to the given load policy. The name must be unique as stated before, otherwise the thread group associated is undefined. | `true` | |
+
 
 ### Running an Test
 
