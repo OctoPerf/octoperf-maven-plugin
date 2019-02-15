@@ -51,7 +51,7 @@ public class RunJmx extends AbstractMojo {
   private String apiKey = "";
   @Parameter(defaultValue = "Default")
   private String workspaceName = "";
-  @Parameter(required = true)
+  @Parameter(defaultValue = "Maven", required = true)
   private String projectName = "";
   @Parameter(defaultValue = "${project.basedir}/src/main/resources")
   private File resourcesFolder;
