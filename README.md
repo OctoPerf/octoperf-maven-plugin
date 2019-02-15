@@ -106,9 +106,10 @@ Let's see all the configuration involved here:
 | `projectName` | `String` | `1.0.0` | Name of the workspace where to run the script. Project name **must be unique**. Project Design and Runtime sections are cleared on each test start. | `false` | `Maven` |
 | `resourcesFolder` | `String` | `1.0.0` | Path to the third party files required by your script (like CSV files). | `false` |  `${project.basedir}/src/main/resources` |
 | `scenarioFile` | `String` | `1.0.0` | Path to the `scenario.json` defining the whole scenario (user profiles to run, load policies etc). | `false` |  `${project.basedir}/scenario.json` |
-| `isDownloadJUnitReports` | `String` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
-| `isDownloadLogs` | `String` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
-| `isDownloadJTLs` | `String` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
+| `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
+| `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
+| `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
+| `serverUrl` | `boolean` | `1.0.0` | URL of the OctoPerf API server. Can be changed to use an Enterprise OctoPerf server. | `false` |  `https://api.octoperf.com` |
 
 ### Parameter Details
 
