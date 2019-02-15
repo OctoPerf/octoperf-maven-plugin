@@ -58,7 +58,7 @@ final class RestScenarios implements Scenarios {
     final String json = readFile(jsonFile);
     final RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
     return calls
-      .execute(api.newScenario(workspaceId, projectId, body))
+      .execute(api.importFromMaven(workspaceId, projectId, body))
       .orElseThrow(() -> new IOException("Could not create scenario from JSON"));
   }
 

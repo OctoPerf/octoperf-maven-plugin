@@ -18,7 +18,7 @@ import java.util.Set;
 public interface ScenarioApi {
 
   @POST("/runtime/scenarios/import/maven/{workspaceId}/{projectId}")
-  Call<Scenario> newScenario(
+  Call<Scenario> importFromMaven(
     @Path("workspaceId") String workspaceId,
     @Path("projectId") String projectId,
     @Body RequestBody body);
