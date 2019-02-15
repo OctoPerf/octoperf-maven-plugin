@@ -1,17 +1,54 @@
 # OctoPerf Maven Plugin
 
-OctoPerf integrates with [Maven](https://maven.apache.org/), a leading open-source solution for building and organizing software development. 
+The OctoPerf Maven Plugin let's you run JMeter JMX scripts at scale on OctoPerf Saas or On-Premise platform. 
 
 OctoPerf Maven plugin has multiple advantages:
 
-- **Integration**: most Continuous Integration servers (like Jenkins, [Bamboo](https://fr.atlassian.com/software/bamboo) or [TravisCI](https://travis-ci.org/) just to name a few) fully support Maven,
+- **CI Integration**: most Continuous Integration servers (like Jenkins, [Bamboo](https://fr.atlassian.com/software/bamboo) or [TravisCI](https://travis-ci.org/) just to name a few) fully support Maven,
 - **Versioning**: version your JMeter scripts (like [Github](https://github.com/)), and run them directly from your CI server.
 
-## Getting Started
+## Goals Overview
 
-Let's see how to setup an automated test using the **OctoPerf Maven Plugin**.
+The OctoPerf plugin has the following goals:
 
-### Pre-requisites
+- `octoperf:run`: uploads and runs a JMeter JMX script on OctoPerf load testing tool.
+
+## System Requirements
+
+he following specifies the minimum requirements to run this Maven plugin:
+
+|Maven |  3.0 |
+| JDK |  1.7|
+| Memory | No minimum requirement.|
+| Disk Space |  No minimum requirement. |
+
+## Usage
+
+You should specify the version in your project's plugin configuration:
+
+```xml
+<project>
+  ...
+  <build>
+    <!-- To use the plugin goals in your POM or parent POM -->
+    <plugins>
+      <plugin>
+        <groupId>com.octoperf</groupId>
+        <artifactId>octoperf-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <configuration>
+          <!-- See configuration below -->
+          ...
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+  ...
+</project>
+```
+
+## Pre-requisites
 
 There are a number of things you need before getting started:
 
