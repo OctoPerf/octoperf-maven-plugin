@@ -9,7 +9,7 @@ OctoPerf Maven plugin has multiple advantages:
 
 The maven plugin is distributed via [OctoPerf Maven Repository](https://github.com/OctoPerf/maven-repository) hosted on GitHub.
 
-**Current version**: `1.0.0`
+**Current version**: `2.0.0`
 
 ## Goals Overview
 
@@ -31,7 +31,7 @@ The following specifies the minimum requirements to run this Maven plugin:
 | Memory | No minimum requirement.|
 | Disk Space |  No minimum requirement. |
 
-## Other Requirements
+## Mandatory Parameters
 
 There are a number of things you need before getting started:
 
@@ -40,10 +40,8 @@ There are a number of things you need before getting started:
 | OctoPerf API Key | Login on OctoPerf `Account > Profile`, and copy the API key. |
 | Workspace Name | Name of the workspace where to run the test. |
 | Project Name | Name of an empty project where to run the test. |
-| Scenario Name | Name of an empty project where to run the test. |
-| JMeter JMX | JMeter script containing the thread groups to run. |
-| Resources Files | Files associated to your script, like CSV files. |
-| Scenario Json | OctoPerf Scenario defined in [Json](https://fr.wikipedia.org/wiki/JavaScript_Object_Notation). |
+
+Depending on the goal you plan to use, additional parameters may be required.
 
 ## Usage
 
@@ -58,7 +56,7 @@ You should specify the version in your project's plugin configuration:
       <plugin>
         <groupId>com.octoperf</groupId>
         <artifactId>octoperf-maven-plugin</artifactId>
-        <version>1.0.0</version>
+        <version>2.0.0</version>
         <configuration>
           <!-- See configuration below -->
           ...
@@ -95,11 +93,9 @@ The following configuration is shared by all the goals:
 | `serverUrl` | `boolean` | `1.0.0` | URL of the OctoPerf API server. Can be changed to use an Enterprise OctoPerf server. | `false` |  `https://api.octoperf.com` |
 
 
-## Goals
+## octoperf:wipe-project
 
-### octoperf:wipe-project
-
-#### Summary
+### Summary
 
 **Full Name**: `com.octoperf:octoperf-maven-plugin:wipe-project`
 **Description**:
@@ -111,13 +107,13 @@ Wipes the entire project specified with name from property `projectName`, in wor
 - Http servers,
 - and project files.
 
-#### Additional Parameters
+### Additional Parameters
 
 This goal has no additional parameters.
 
-### octoperf:import-jmx
+## octoperf:import-jmx
 
-#### Summary
+### Summary
 
 **Full Name**: `com.octoperf:octoperf-maven-plugin:import-jmx`
 **Description**:
@@ -131,9 +127,19 @@ Uploads and imports a JMeter JMX along with its resource files on OctoPerf platf
 | `jmxFile` | `String` | `1.0.0` | File path to the JMX script which is going to be uploaded to the platform | `true` | `${project.basedir}/script.jmx` |
 | `resourcesFolder` | `String` | `1.0.0` | Path to the third party files required by your script (like CSV files). | `false` |  `${project.basedir}/src/main/resources` |
 
-### octoperf:import-scenario
+### Parameter Details
 
-#### Summary
+#### `<jmxFile>`
+
+The JMeter script must comply the following rules:
+
+- It may contain one or several `ThreadGroup`: each thread group must have **a unique name**,
+- The name of each thread group will be used in the `scenario.json` to link the load policies to the thread groups.
+- **CSV Dataset configurations** are imported along with the thread groups. Prefer lowercase filenames with no special characters.
+
+## octoperf:import-scenario
+
+### Summary
 
 **Full Name**: `com.octoperf:octoperf-maven-plugin:import-scenario`
 **Description**:
@@ -147,37 +153,9 @@ Make sure the project already contains the referenced virtual users, otherwise t
 |------|------|-------|-------------|----------|---------------|
 | `scenarioFile` | `String` | `1.0.0` | File path to the scenario json definition. | `true` | `${project.basedir}/scenario.json` |
 
-### octoperf:execute-scenario
-
-#### Summary
-
-**Full Name**: `com.octoperf:octoperf-maven-plugin:execute-scenario`
-**Description**:
-
-Executes the scenario with name specified by `scenarioName` parameter (or the single scenario within the project if left empty).
-
-#### Additional Parameters
-
-| Name | Type | Since | Description | Required | Default Value |
-|------|------|-------|-------------|----------|---------------|
-| `scenarioName` | `String` | `2.0.0` | Scenario name. If empty, a single scenario within the project is expected to exist. | `false` | `` |
-| `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
-| `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
-| `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
-| `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
-
 ### Parameter Details
 
-#### `<jmxFile>`
-
-The JMeter script must comply the following rules:
-
-- It may contain one or several `ThreadGroup`: each thread group must have **a unique name**,
-- The name of each thread group will be used in the `scenario.json` to link the load policies to the thread groups.
-- **CSV Dataset configurations** are imported along with the thread groups. Prefer lowercase filenames with no special characters.
-
 #### `<scenarioFile>`
-
 
 Here is a sample `scenario.json` file.
 
@@ -231,9 +209,78 @@ Once you have your `scenario.json`, please make sure to configure the ids inside
 | `virtualUserId` | `String` | `1.0.0` | **Thread Group Name** associated to the given load policy. The name must be unique as stated before, otherwise the thread group associated is undefined. | `true` | |
 
 
-### Running an Test
+## octoperf:execute-scenario
 
-Once your maven project is ready, run the following command to start a new test:
+### Summary
+
+**Full Name**: `com.octoperf:octoperf-maven-plugin:execute-scenario`
+**Description**:
+
+Executes the scenario with name specified by `scenarioName` parameter (or the single scenario within the project if left empty).
+
+#### Additional Parameters
+
+| Name | Type | Since | Description | Required | Default Value |
+|------|------|-------|-------------|----------|---------------|
+| `scenarioName` | `String` | `2.0.0` | Scenario name. If empty, a single scenario within the project is expected to exist. | `false` | `` |
+| `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
+| `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
+| `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
+| `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
+
+## Examples
+
+### Running an Existing Scenario
+
+On OctoPerf platform, you must:
+
+- Choose a workspace to work in. Example: `Default`,
+- Choose a project to work in. Example: `Maven`,
+- Import a virtual user and create an associated scenario.
+
+Next, you are going to configure the maven `pom.xml` configuration file like the following:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>pom</packaging>
+  <groupId>com.octoperf</groupId>
+  <artifactId>octoperf-test</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.octoperf</groupId>
+        <artifactId>octoperf-maven-plugin</artifactId>
+        <version>2.0.0</version>
+        <configuration>
+          <apiKey>YOUR_API_KEY</apiKey>
+          <workspaceName>WORKSPACE_NAME</workspaceName>
+          <projectName>PROJECT_NAME</projectName>
+          <scenarioName>SCENARIO_NAME</scenarioName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <pluginRepositories>
+    ...
+  </pluginRepositories>
+</project>
+```
+
+Provide the relevant configuration parameters:
+
+- `YOUR_API_KEY`: your OctoPerf account API Key,
+- `WORKSPACE_NAME`: the name of the workspace to use,
+- `PROJECT_NAME`: the name of the project to use,
+- `SCENARIO_NAME`: the name of the scenario to execute.
+
+Once done, run the following command:
 
 ```bash
 mvn octoperf:execute-scenario
@@ -263,7 +310,7 @@ The test should start within a few minutes. Here is an example console output of
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
 [INFO] Total time: 06:03 min
-[INFO] Finished at: 2019-02-14T17:24:36+01:00
+[INFO] Finished at: 2019-06-01T17:24:36+01:00
 [INFO] ------------------------------------------------------------------------
 ```
 
