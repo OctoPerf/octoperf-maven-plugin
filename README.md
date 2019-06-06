@@ -122,44 +122,21 @@ On OctoPerf platform, you must first:
 
 **WARNING**: the project scripts and scenarios are going to be wiped on each test.
 
-Next, you are going to configure the maven `pom.xml` configuration file like the following:
+Next, configure octoperf-maven-plugin in `pom.xml` with the following parameters:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <packaging>pom</packaging>
-  <groupId>com.octoperf</groupId>
-  <artifactId>octoperf-test</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+<configuration>
+  <apiKey>YOUR_API_KEY</apiKey>
+  <workspaceName>WORKSPACE_NAME</workspaceName>
+  <projectName>PROJECT_NAME</projectName>
+</configuration>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.octoperf</groupId>
-        <artifactId>octoperf-maven-plugin</artifactId>
-        <version>2.0.0</version>
-        <configuration>
-          <apiKey>YOUR_API_KEY</apiKey>
-          <workspaceName>WORKSPACE_NAME</workspaceName>
-          <projectName>PROJECT_NAME</projectName>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <pluginRepositories>
-    ...
-  </pluginRepositories>
-</project>
 ```
 
-Then, run the following command:
+Please replace the placeholders with the relevant parameters. Once done, run the following command:
 
 ```bash
-mvn octoperf:wipe-project octoperf:import-jmx
+mvn octoperf:wipe-project
 ```
 
 The output should look like:
@@ -289,49 +266,18 @@ On OctoPerf platform, you must first:
 - Choose a project to work in. Example: `Maven`,
 - Import a virtual user and create an associated scenario.
 
-Next, you are going to configure the maven `pom.xml` configuration file like the following:
+Next, configure octoperf-maven-plugin in `pom.xml` with the following parameters:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <packaging>pom</packaging>
-  <groupId>com.octoperf</groupId>
-  <artifactId>octoperf-test</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.octoperf</groupId>
-        <artifactId>octoperf-maven-plugin</artifactId>
-        <version>2.0.0</version>
-        <configuration>
-          <apiKey>YOUR_API_KEY</apiKey>
-          <workspaceName>WORKSPACE_NAME</workspaceName>
-          <projectName>PROJECT_NAME</projectName>
-          <scenarioName>SCENARIO_NAME</scenarioName>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <pluginRepositories>
-    ...
-  </pluginRepositories>
-</project>
+<configuration>
+    <apiKey>YOUR_API_KEY</apiKey>
+    <workspaceName>WORKSPACE_NAME</workspaceName>
+    <projectName>PROJECT_NAME</projectName>
+    <scenarioName>SCENARIO_NAME</scenarioName>
+</configuration>
 ```
 
-Provide the relevant configuration parameters:
-
-- `YOUR_API_KEY`: your OctoPerf account API Key,
-- `WORKSPACE_NAME`: the name of the workspace to use,
-- `PROJECT_NAME`: the name of the project to use,
-- `SCENARIO_NAME`: the name of the scenario to execute.
-
-Once done, run the following command:
+Please replace the placeholders with the relevant parameters. Once done, run the following command:
 
 ```bash
 mvn octoperf:execute-scenario
