@@ -431,5 +431,19 @@ To import and run a JMX script, you need to provide:
 
 - The JMX script,
 - The resource files,
-- *Optional*: the `scenario.json` configuration.
+- The `scenario.json` containing the scenario to execute.
+
+Then run the command:
+
+```bash
+mvn octoperf:wipe-project octoperf:import-jmx octoperf:import-scenario octoperf:execute-scenario
+```
+
+This will:
+
+- Wipe the project virtual users, resource files, http servers and scenarios,
+- Import the JMX and resource files which in turn creates the virtual user scripts on the platform,
+- Import the scenario JMX which defines the virtual user scripts to run,
+- Launch the scenario previously imported.
+
 
