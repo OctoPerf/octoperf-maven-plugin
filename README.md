@@ -15,7 +15,10 @@ The maven plugin is distributed via [OctoPerf Maven Repository](https://github.c
 
 The OctoPerf plugin has the following goals:
 
-- `octoperf:run`: uploads and runs a JMeter JMX script on OctoPerf load testing tool.
+- `octoperf:wipe-project`: Deletes all virtual users, files and scenarios within the project,
+- `octoperf:import-jmx`: Imports JMeter JMX Project along with resource files (like csvs etc.) on OctoPerf platform,
+- `octoperf:import-scenario`: Imports `scenario.json` on OctoPerf platform,
+- `octoperf:execute-scenario`: Executes the scenario with the specified name (or the previously imported scenario if no name specified).
 
 ## System Requirements
 
@@ -37,6 +40,7 @@ There are a number of things you need before getting started:
 | OctoPerf API Key | Login on OctoPerf `Account > Profile`, and copy the API key. |
 | Workspace Name | Name of the workspace where to run the test. |
 | Project Name | Name of an empty project where to run the test. |
+| Scenario Name | Name of an empty project where to run the test. |
 | JMeter JMX | JMeter script containing the thread groups to run. |
 | Resources Files | Files associated to your script, like CSV files. |
 | Scenario Json | OctoPerf Scenario defined in [Json](https://fr.wikipedia.org/wiki/JavaScript_Object_Notation). |
@@ -79,11 +83,34 @@ You should specify the version in your project's plugin configuration:
   </pluginRepositories>
 </project>
 ```
+## Common configuration
+
+| Name | Type | Since | Description | Required | Default Value |
+|------|------|-------|-------------|----------|---------------|
+| `apiKey` | `String` | `1.0.0` | Your OctoPerf Account API key is required so the plugin can connect to the platform and run tests on your behalf. | `true` | |
+| `workspaceName` | `String` | `1.0.0` | Name of the workspace where to run the script. Workspace name **must be unique**. | `false` | `Default` |
+| `projectName` | `String` | `1.0.0` | Name of the workspace where to run the script. Project name **must be unique**. Project Design and Runtime sections are cleared on each test start. | `false` | `Maven` |
+| `serverUrl` | `boolean` | `1.0.0` | URL of the OctoPerf API server. Can be changed to use an Enterprise OctoPerf server. | `false` |  `https://api.octoperf.com` |
+
 ## Goals
+
+### octoperf:wipe-project
+
+**Full Name**: `com.octoperf:octoperf-maven-plugin:wipe-project`
+**Description**:
+
+Wipes the entire project specified with name from property `projectName`, in workspace with name `workspaceName`. It removes in the following order:
+
+- Scenarios,
+- Virtual users,
+- Http servers,
+- and project files.
+
+
 
 ### octoperf:run
 
-**Full Name**: `com.octoperf:octoperf-maven-plugin:1.0.0`
+**Full Name**: `com.octoperf:octoperf-maven-plugin:run`
 **Description**:
 
 Goal which uploads and runs your JMeter JMX script on OctoPerf Load Testing Platform. It performs the following steps: 

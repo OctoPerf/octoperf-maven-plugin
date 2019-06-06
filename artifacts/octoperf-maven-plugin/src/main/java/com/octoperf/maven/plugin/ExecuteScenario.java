@@ -39,6 +39,8 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
     ERROR
   );
 
+  @Parameter(defaultValue = "Scenario")
+  protected String scenarioName = "";
   @Parameter(defaultValue = "true")
   protected Boolean isDownloadJUnitReports = true;
   @Parameter(defaultValue = "true")

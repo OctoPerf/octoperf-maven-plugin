@@ -21,8 +21,6 @@ public abstract class AbstractOctoPerfMojo extends AbstractMojo {
   protected String workspaceName = "";
   @Parameter(defaultValue = "Maven", required = true)
   protected String projectName = "";
-  @Parameter(defaultValue = "Scenario")
-  protected String scenarioName = "";
   @Parameter(required = true)
   protected String apiKey = "";
 
