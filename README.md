@@ -249,14 +249,26 @@ This is a very simple scenario configured as following:
 - Click on the _Copy JSON_ button,
 - Paste the JSON content in a text file named `scenario.json`.
 
-Once you have your `scenario.json`, please make sure to configure the ids inside properly.
+### Example
 
-**scenario.json Configuration**
+## octoperf:execute-scenario
+
+### Summary
+
+**Full Name**: `com.octoperf:octoperf-maven-plugin:execute-scenario`
+**Description**:
+
+Executes the scenario with name specified by `scenarioName` parameter (or the single scenario within the project if left empty).
+
+### Additional Parameters
 
 | Name | Type | Since | Description | Required | Default Value |
 |------|------|-------|-------------|----------|---------------|
-| `providerId` | `String` | `1.0.0` | **OctoPerf Provider Name** to use to run the tests. Make sure the name of the provider is unique. If not unique, the provider being used to run the test is undefined. | `true` | |
-| `virtualUserId` | `String` | `1.0.0` | **Thread Group Name** associated to the given load policy. The name must be unique as stated before, otherwise the thread group associated is undefined. | `true` | |
+| `scenarioName` | `String` | `2.0.0` | Scenario name. If empty, a single scenario within the project is expected to exist. | `false` | `` |
+| `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
+| `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
+| `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
+| `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
 
 ### Example
 
@@ -310,22 +322,3 @@ The test should start within a few minutes. Here is an example console output of
 [INFO] Finished at: 2019-06-01T17:24:36+01:00
 [INFO] ------------------------------------------------------------------------
 ```
-
-## octoperf:execute-scenario
-
-### Summary
-
-**Full Name**: `com.octoperf:octoperf-maven-plugin:execute-scenario`
-**Description**:
-
-Executes the scenario with name specified by `scenarioName` parameter (or the single scenario within the project if left empty).
-
-#### Additional Parameters
-
-| Name | Type | Since | Description | Required | Default Value |
-|------|------|-------|-------------|----------|---------------|
-| `scenarioName` | `String` | `2.0.0` | Scenario name. If empty, a single scenario within the project is expected to exist. | `false` | `` |
-| `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
-| `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
-| `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
-| `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
