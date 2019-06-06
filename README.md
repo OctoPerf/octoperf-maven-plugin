@@ -162,10 +162,9 @@ This is a very simple scenario configured as following:
 - Login on OctoPerf,
 - Upload your JMX Script to create the virtual user profiles,
 - [Create a scenario](https://doc.octoperf.com/runtime/) with the configuration you want,
-- Open the web developer console of your browser (usually by hitting `F12`), and go to network tab to see http requests. Filter by type and select `XHR`,
-- Reopen the scenario to initiate a GET request to the scenario json,
-- Locate the request in the developer console and copy the response from the server,
-- You can use [JsonLint](https://jsonlint.com) to format the Json properly.
+- Click on the [Export Scenario](https://doc.octoperf.com/runtime/edit-scenario/export-scenario-maven/) menu,
+- Click on the _Copy JSON_ button,
+- Paste the JSON content in a text file named `scenario.json`.
 
 Once you have your `scenario.json`, please make sure to configure the ids inside properly.
 
@@ -174,7 +173,7 @@ Once you have your `scenario.json`, please make sure to configure the ids inside
 | Name | Type | Since | Description | Required | Default Value |
 |------|------|-------|-------------|----------|---------------|
 | `providerId` | `String` | `1.0.0` | **OctoPerf Provider Name** to use to run the tests. Make sure the name of the provider is unique. If not unique, the provider being used to run the test is undefined. | `true` | |
-| `virtualUserId` | `String` | `1.0.0` | T*thread Group Name** associated to the given load policy. The name must be unique as stated before, otherwise the thread group associated is undefined. | `true` | |
+| `virtualUserId` | `String` | `1.0.0` | **Thread Group Name** associated to the given load policy. The name must be unique as stated before, otherwise the thread group associated is undefined. | `true` | |
 
 
 ### Running an Test
