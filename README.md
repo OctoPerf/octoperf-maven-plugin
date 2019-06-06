@@ -111,6 +111,79 @@ Wipes the entire project specified with name from property `projectName`, in wor
 
 This goal has no additional parameters.
 
+### Example
+
+On OctoPerf platform, you must first:
+
+- Choose a workspace to work in. Example: `Default`,
+- Choose a project to work in. Example: `Maven`,
+- Provide a `script.jmx` and place it next to the maven `pom.xml`,
+- Provide resource files (like csv files) in
+
+**WARNING**: the project scripts and scenarios are going to be wiped on each test.
+
+Next, you are going to configure the maven `pom.xml` configuration file like the following:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>pom</packaging>
+  <groupId>com.octoperf</groupId>
+  <artifactId>octoperf-test</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.octoperf</groupId>
+        <artifactId>octoperf-maven-plugin</artifactId>
+        <version>2.0.0</version>
+        <configuration>
+          <apiKey>YOUR_API_KEY</apiKey>
+          <workspaceName>WORKSPACE_NAME</workspaceName>
+          <projectName>PROJECT_NAME</projectName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <pluginRepositories>
+    ...
+  </pluginRepositories>
+</project>
+```
+
+Then, run the following command:
+
+```bash
+mvn octoperf:wipe-project octoperf:import-jmx
+```
+
+The output should look like:
+
+```bash
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ---------------------< com.octoperf:octoperf-test >---------------------
+[INFO] Building octoperf-test 1.0.0-SNAPSHOT
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- octoperf-maven-plugin:2.0.0-SNAPSHOT:wipe-project (default-cli) @ octoperf-test ---
+[INFO] Workspace: Personal
+[INFO] Project: Maven
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.865 s
+[INFO] Finished at: 2019-06-06T16:12:05+02:00
+[INFO] ------------------------------------------------------------------------
+```
+
+All the project virtual users, resource files, http servers and scenarios are deleted.
+
 ## octoperf:import-jmx
 
 ### Summary
@@ -208,31 +281,9 @@ Once you have your `scenario.json`, please make sure to configure the ids inside
 | `providerId` | `String` | `1.0.0` | **OctoPerf Provider Name** to use to run the tests. Make sure the name of the provider is unique. If not unique, the provider being used to run the test is undefined. | `true` | |
 | `virtualUserId` | `String` | `1.0.0` | **Thread Group Name** associated to the given load policy. The name must be unique as stated before, otherwise the thread group associated is undefined. | `true` | |
 
+### Example
 
-## octoperf:execute-scenario
-
-### Summary
-
-**Full Name**: `com.octoperf:octoperf-maven-plugin:execute-scenario`
-**Description**:
-
-Executes the scenario with name specified by `scenarioName` parameter (or the single scenario within the project if left empty).
-
-#### Additional Parameters
-
-| Name | Type | Since | Description | Required | Default Value |
-|------|------|-------|-------------|----------|---------------|
-| `scenarioName` | `String` | `2.0.0` | Scenario name. If empty, a single scenario within the project is expected to exist. | `false` | `` |
-| `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
-| `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
-| `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
-| `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
-
-## Examples
-
-### Running an Existing Scenario
-
-On OctoPerf platform, you must:
+On OctoPerf platform, you must first:
 
 - Choose a workspace to work in. Example: `Default`,
 - Choose a project to work in. Example: `Maven`,
@@ -314,3 +365,21 @@ The test should start within a few minutes. Here is an example console output of
 [INFO] ------------------------------------------------------------------------
 ```
 
+## octoperf:execute-scenario
+
+### Summary
+
+**Full Name**: `com.octoperf:octoperf-maven-plugin:execute-scenario`
+**Description**:
+
+Executes the scenario with name specified by `scenarioName` parameter (or the single scenario within the project if left empty).
+
+#### Additional Parameters
+
+| Name | Type | Since | Description | Required | Default Value |
+|------|------|-------|-------------|----------|---------------|
+| `scenarioName` | `String` | `2.0.0` | Scenario name. If empty, a single scenario within the project is expected to exist. | `false` | `` |
+| `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
+| `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
+| `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
+| `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
