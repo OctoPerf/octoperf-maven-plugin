@@ -83,7 +83,7 @@ You should specify the version in your project's plugin configuration:
 ```
 ## Common configuration
 
-The following configuration is shared by all the goals:
+The following parameters are shared by all the goals:
 
 | Name | Type | Since | Description | Required | Default Value |
 |------|------|-------|-------------|----------|---------------|
@@ -91,7 +91,6 @@ The following configuration is shared by all the goals:
 | `workspaceName` | `String` | `1.0.0` | Name of the workspace where to run the script. Workspace name **must be unique**. | `false` | `Default` |
 | `projectName` | `String` | `1.0.0` | Name of the workspace where to run the script. Project name **must be unique**. Project Design and Runtime sections are cleared on each test start. | `false` | `Maven` |
 | `serverUrl` | `boolean` | `1.0.0` | URL of the OctoPerf API server. Can be changed to use an Enterprise OctoPerf server. | `false` |  `https://api.octoperf.com` |
-
 
 ## octoperf:wipe-project
 
@@ -187,6 +186,54 @@ The JMeter script must comply the following rules:
 - The name of each thread group will be used in the `scenario.json` to link the load policies to the thread groups.
 - **CSV Dataset configurations** are imported along with the thread groups. Prefer lowercase filenames with no special characters.
 
+### Example
+
+On OctoPerf platform, you must first:
+
+- Choose a workspace to work in. Example: `Default`,
+- Choose a project to work in. Example: `Maven`,
+- Provide a `script.jmx` and place it next to the maven `pom.xml`,
+- Provide resource files (like csv files) in `src/main/resources` folder.
+
+Next, configure octoperf-maven-plugin in `pom.xml` with the following parameters:
+
+```xml
+<configuration>
+  <apiKey>YOUR_API_KEY</apiKey>
+  <workspaceName>WORKSPACE_NAME</workspaceName>
+  <projectName>PROJECT_NAME</projectName>
+</configuration>
+
+```
+
+Please replace the placeholders with the relevant parameters. Once done, run the following command:
+
+```bash
+mvn octoperf:import-jmx
+```
+
+The output should look like:
+
+```bash
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ---------------------< com.octoperf:octoperf-test >---------------------
+[INFO] Building octoperf-test 1.0.0-SNAPSHOT
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- octoperf-maven-plugin:2.0.0-SNAPSHOT:import-jmx (default-cli) @ octoperf-test ---
+[INFO] Workspace: Personal
+[INFO] Project: Maven
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.865 s
+[INFO] Finished at: 2019-06-06T16:12:05+02:00
+[INFO] ------------------------------------------------------------------------
+```
+
+Browse to the OctoPerf in the relevant workspace and project. It should contain the imported JMX along with the resource files.
+
 ## octoperf:import-scenario
 
 ### Summary
@@ -250,6 +297,51 @@ This is a very simple scenario configured as following:
 - Paste the JSON content in a text file named `scenario.json`.
 
 ### Example
+
+On OctoPerf platform, you must first:
+
+- Choose a workspace to work in. Example: `Default`,
+- Choose a project to work in. Example: `Maven`,
+- Provide a `scenario.json` file next to the `pom.xml`.
+
+Next, configure octoperf-maven-plugin in `pom.xml` with the following parameters:
+
+```xml
+<configuration>
+  <apiKey>YOUR_API_KEY</apiKey>
+  <workspaceName>WORKSPACE_NAME</workspaceName>
+  <projectName>PROJECT_NAME</projectName>
+</configuration>
+
+```
+
+Please replace the placeholders with the relevant parameters. Once done, run the following command:
+
+```bash
+mvn octoperf:import-scenario
+```
+
+The output should look like:
+
+```bash
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ---------------------< com.octoperf:octoperf-test >---------------------
+[INFO] Building octoperf-test 1.0.0-SNAPSHOT
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- octoperf-maven-plugin:2.0.0-SNAPSHOT:import-scenario (default-cli) @ octoperf-test ---
+[INFO] Workspace: Personal
+[INFO] Project: Maven
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.865 s
+[INFO] Finished at: 2019-06-06T16:12:05+02:00
+[INFO] ------------------------------------------------------------------------
+```
+
+Browse to OctoPerf Platform and check the relevant workspace / project contain the imported scenario.
 
 ## octoperf:execute-scenario
 
