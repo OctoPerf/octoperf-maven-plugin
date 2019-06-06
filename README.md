@@ -169,6 +169,10 @@ All the project virtual users, resource files, http servers and scenarios are de
 
 Uploads and imports a JMeter JMX along with its resource files on OctoPerf platform.
 
+**WARNING**:
+First, wipe the project.
+Then import your JMX. That way, you won't have multiple virtual users with same name.
+
 #### Additional Parameters
 
 | Name | Type | Since | Description | Required | Default Value |
@@ -243,6 +247,8 @@ Browse to the OctoPerf in the relevant workspace and project. It should contain 
 
 Imports the `scenario.json` which contains the description of the scenario to execute.
 Make sure the project already contains the referenced virtual users, otherwise the import will fail.
+
+**WARNING**: First, wipe the project. Then, import the scenario. That way, you won't have multiple scenarios with same name.
 
 #### Additional Parameters
 
@@ -352,6 +358,8 @@ Browse to OctoPerf Platform and check the relevant workspace / project contain t
 
 Executes the scenario with name specified by `scenarioName` parameter (or the single scenario within the project if left empty).
 
+**IMPORTANT**: Scenario name **must be unique**. If the project contains multiple scenarios with the same name, the execution will throw an error.
+
 ### Additional Parameters
 
 | Name | Type | Since | Description | Required | Default Value |
@@ -414,3 +422,14 @@ The test should start within a few minutes. Here is an example console output of
 [INFO] Finished at: 2019-06-01T17:24:36+01:00
 [INFO] ------------------------------------------------------------------------
 ```
+
+## Other Examples
+
+### Import and Execute JMX
+
+To import and run a JMX script, you need to provide:
+
+- The JMX script,
+- The resource files,
+- *Optional*: the `scenario.json` configuration.
+
