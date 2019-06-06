@@ -15,9 +15,9 @@ import static com.google.common.base.Strings.nullToEmpty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Scenario {
   String id;
-  final String projectId;
-  final String name;
-  final String description;
+  String projectId;
+  String name;
+  String description;
 
   @JsonCreator
   Scenario(@JsonProperty("id") final String id,

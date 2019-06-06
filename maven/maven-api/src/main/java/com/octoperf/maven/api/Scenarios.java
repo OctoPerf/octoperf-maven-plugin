@@ -15,6 +15,8 @@ public interface Scenarios {
     String projectId,
     File jsonFile) throws IOException;
 
+  Scenario findByName(String projectId, String name) throws IOException;
+
   BenchReport startTest(String scenarioId) throws IOException;
 
   void log(Scenario scenario);

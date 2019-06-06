@@ -10,8 +10,8 @@ import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.octoperf.entity.design.ProjectType.DESIGN;
 import static lombok.AccessLevel.PACKAGE;
@@ -27,15 +27,16 @@ final class RestProjects implements Projects {
   CallService calls;
 
   @Override
-  public Optional<String> getProjectId(
+  public String getProjectId(
     final String workspaceId,
-    final String name) {
+    final String name) throws IOException {
     return calls
       .execute(api.list(workspaceId, DESIGN))
       .orElse(ImmutableList.of())
       .stream()
       .filter(p -> Objects.equals(p.getName(), name))
       .map(Project::getId)
-      .findFirst();
+      .findFirst()
+      .orElseThrow(() -> new IOException("Could not find project with name='" + name + "'"));
   }
 }

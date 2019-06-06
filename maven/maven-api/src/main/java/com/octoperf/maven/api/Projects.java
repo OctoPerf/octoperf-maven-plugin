@@ -1,11 +1,11 @@
 package com.octoperf.maven.api;
 
-import java.util.Optional;
+import java.io.IOException;
 
 @FunctionalInterface
 public interface Projects {
 
-  Optional<String> getProjectId(
+  String getProjectId(
     String workspaceId,
-    String name);
+    String name) throws IOException;
 }

@@ -10,8 +10,8 @@ import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -26,13 +26,14 @@ final class RestWorkspaces implements Workspaces {
   CallService calls;
 
   @Override
-  public Optional<String> getWorkspaceId(final String name) {
+  public String getWorkspaceId(final String name) throws IOException {
     return calls
       .execute(api.memberOf())
       .orElse(ImmutableList.of())
       .stream()
       .filter(w -> Objects.equals(w.getName(), name))
       .findFirst()
-      .map(Workspace::getId);
+      .map(Workspace::getId)
+      .orElseThrow(() -> new IOException("Could not find workspace '" + name + "'"));
   }
 }

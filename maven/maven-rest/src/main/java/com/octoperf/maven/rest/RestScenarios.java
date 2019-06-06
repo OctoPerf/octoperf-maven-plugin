@@ -6,7 +6,6 @@ import com.octoperf.entity.analysis.report.BenchReport;
 import com.octoperf.entity.runtime.Scenario;
 import com.octoperf.maven.api.Scenarios;
 import com.octoperf.runtime.rest.api.ScenarioApi;
-import com.octoperf.tools.jackson.mapper.JsonMapperService;
 import com.octoperf.tools.retrofit.CallService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -15,11 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static java.nio.file.Files.newInputStream;
@@ -32,8 +34,6 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PACKAGE)
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 final class RestScenarios implements Scenarios {
-  @NonNull
-  JsonMapperService mapper;
   @NonNull
   ScenarioApi api;
   @NonNull
@@ -60,6 +60,27 @@ final class RestScenarios implements Scenarios {
     return calls
       .execute(api.importFromMaven(workspaceId, projectId, body))
       .orElseThrow(() -> new IOException("Could not create scenario from JSON"));
+  }
+
+  @Override
+  public Scenario findByName(
+    final String projectId,
+    final String name) throws IOException {
+    final List<Scenario> list = calls
+      .execute(api.list(projectId))
+      .orElse(ImmutableList.of());
+
+    final Stream<Scenario> stream = list.stream();
+    if (name.isEmpty()){
+      return stream
+        .findFirst()
+        .orElseThrow(() -> new IOException("No Scenario found!"));
+    }
+
+    return stream
+      .filter(s -> StringUtils.equalsIgnoreCase(s.getName(), name))
+      .findFirst()
+      .orElseThrow(() -> new IOException("No Scenario with name='"+name+"' found!"));
   }
 
   private String readFile(final File file) throws IOException {

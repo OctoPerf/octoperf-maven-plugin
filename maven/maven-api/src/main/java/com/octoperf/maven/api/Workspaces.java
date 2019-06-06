@@ -1,9 +1,9 @@
 package com.octoperf.maven.api;
 
-import java.util.Optional;
+import java.io.IOException;
 
 @FunctionalInterface
 public interface Workspaces {
 
-  Optional<String> getWorkspaceId(String name);
+  String getWorkspaceId(String name) throws IOException;
 }
