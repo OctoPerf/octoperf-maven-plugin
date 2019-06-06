@@ -7,10 +7,13 @@ import com.octoperf.entity.runtime.BenchResult;
 import com.octoperf.entity.runtime.BenchResultState;
 import com.octoperf.entity.runtime.Scenario;
 import com.octoperf.maven.api.*;
+import com.octoperf.maven.plugin.threshold.ThresholdAlarms;
+import com.octoperf.maven.plugin.threshold.ThresholdSeverity;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.support.GenericApplicationContext;
@@ -20,6 +23,7 @@ import java.util.Set;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.octoperf.entity.runtime.BenchResultState.*;
+import static com.octoperf.maven.plugin.threshold.ThresholdSeverity.PASSED;
 import static java.util.Optional.ofNullable;
 import static org.joda.time.DateTime.now;
 import static org.joda.time.format.DateTimeFormat.forPattern;
@@ -35,108 +39,122 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
     ERROR
   );
 
+  @Parameter(defaultValue = "true")
+  protected Boolean isDownloadJUnitReports = true;
+  @Parameter(defaultValue = "true")
+  protected Boolean isDownloadLogs = true;
+  @Parameter(defaultValue = "false")
+  protected Boolean isDownloadJTLs = false;
+  @Parameter
+  protected ThresholdSeverity stopTestIfThreshold = PASSED;
+
   @Override
   public void execute() throws MojoExecutionException {
     final GenericApplicationContext context = newContext();
-
-    BenchResult benchResult = null;
 
     final Log log = getLog();
     final BenchResults results = context.getBean(BenchResults.class);
     try {
       final Workspaces workspaces = context.getBean(Workspaces.class);
+      log.info("Workspace: " + workspaceName);
       final String workspaceId = workspaces.getWorkspaceId(workspaceName);
 
       final Projects projects = context.getBean(Projects.class);
+      log.info("Project: " + projectName);
       final String projectId = projects.getProjectId(workspaceId, projectName);
 
       final Scenarios scenarios = context.getBean(Scenarios.class);
       final Scenario scenario = scenarios.findByName(projectId, scenarioName);
       scenarios.log(scenario);
 
-      try {
-        benchResult = runTest(
-          scenarios,
-          results,
-          context.getBean(BenchReports.class),
-          context.getBean(BenchMetrics.class),
-          context.getBean(JunitService.class),
-          context.getBean(BenchLogs.class),
-          scenario.getId(),
-          workspaceId
-        );
-      } finally {
-        benchResult = null;
-      }
+      runTest(
+        scenarios,
+        results,
+        context.getBean(BenchReports.class),
+        context.getBean(BenchMetrics.class),
+        context.getBean(JunitService.class),
+        context.getBean(BenchLogs.class),
+        context.getBean(ThresholdAlarms.class),
+        scenario.getId(),
+        workspaceId
+      );
     } catch (final IOException | InterruptedException e) {
       log.error(e);
       throw new MojoExecutionException("", e);
-    } finally {
-
-      ofNullable(benchResult)
-        .map(BenchResult::getId)
-        .ifPresent(results::stopTest);
     }
   }
 
 
-  private BenchResult runTest(
+  private void runTest(
     final Scenarios scenarios,
     final BenchResults results,
     final BenchReports reports,
     final BenchMetrics metrics,
     final JunitService junits,
     final BenchLogs logs,
+    final ThresholdAlarms alarms,
     final String scenarioId,
     final String workspaceId) throws IOException, InterruptedException {
     final BenchReport benchReport = scenarios.startTest(scenarioId);
-    BenchResult benchResult = results.find(benchReport.getBenchResultIds().get(0));
-    final String reportUrl = reports.getReportUrl(
-      serverUrl,
-      workspaceId,
-      benchReport
-    );
-    log.info("Bench Report: " + reportUrl);
 
-    DateTime startTime = null;
+    BenchResult benchResult = null;
+    try {
+      benchResult = results.find(benchReport.getBenchResultIds().get(0));
 
-    while(true) {
-      Thread.sleep(TEN_SECS);
+      final String reportUrl = reports.getReportUrl(
+        serverUrl,
+        workspaceId,
+        benchReport
+      );
+      log.info("Bench Report: " + reportUrl);
 
-      benchResult = results.find(benchResult.getId());
-      final BenchResultState currentState = benchResult.getState();
+      DateTime startTime = null;
+      while (true) {
+        Thread.sleep(TEN_SECS);
 
-      if (currentState == RUNNING) {
-        final DateTime now = now();
-        startTime = firstNonNull(startTime, now);
+        benchResult = results.find(benchResult.getId());
+        final BenchResultState currentState = benchResult.getState();
 
-        final MetricValues values = metrics.getMetrics(benchResult.getId());
-        final String printable = metrics.toPrintable(startTime, values);
-        final String nowStr = DATE_FORMAT.print(now);
+        if (alarms.hasAlarms(benchResult.getId(), stopTestIfThreshold)) {
+          throw new IOException("Threshold with severity=" + stopTestIfThreshold + " encountered! Aborting test...");
+        }
 
-        final String progress = String.format("[%.2f%%] ", results.getProgress(benchResult.getId()));
-        log.info(progress + nowStr + " - " + printable);
-      } else if(TERMINAL_STATES.contains(currentState)) {
-        log.info("Test finished with state: " + currentState);
-        break;
-      } else {
-        log.info("Preparing test.. (" + currentState +")");
+        if (currentState == RUNNING) {
+          final DateTime now = now();
+          startTime = firstNonNull(startTime, now);
+
+          final MetricValues values = metrics.getMetrics(benchResult.getId());
+          final String printable = metrics.toPrintable(startTime, values);
+          final String nowStr = DATE_FORMAT.print(now);
+
+          final String progress = String.format("[%.2f%%] ", results.getProgress(benchResult.getId()));
+          log.info(progress + nowStr + " - " + printable);
+        } else if (TERMINAL_STATES.contains(currentState)) {
+          benchResult = null;
+          log.info("Test finished with state: " + currentState);
+          break;
+        } else {
+          log.info("Preparing test.. (" + currentState + ")");
+        }
+      }
+
+    } finally {
+      ofNullable(benchResult)
+        .map(BenchResult::getId)
+        .ifPresent(results::stopTest);
+
+      buildDir.mkdirs();
+      if (isDownloadJUnitReports) {
+        junits.saveJUnitReport(buildDir, benchResult.getId());
+      }
+
+      if (isDownloadLogs) {
+        logs.downloadLogFiles(buildDir, benchResult.getId());
+      }
+
+      if (isDownloadJTLs) {
+        logs.downloadJtlFiles(buildDir, benchResult.getId());
       }
     }
-
-    buildDir.mkdirs();
-    if (isDownloadJUnitReports) {
-      junits.saveJUnitReport(buildDir, benchResult.getId());
-    }
-
-    if (isDownloadLogs) {
-      logs.downloadLogFiles(buildDir, benchResult.getId());
-    }
-
-    if (isDownloadJTLs) {
-      logs.downloadJtlFiles(buildDir, benchResult.getId());
-    }
-
-    return benchResult;
   }
 }

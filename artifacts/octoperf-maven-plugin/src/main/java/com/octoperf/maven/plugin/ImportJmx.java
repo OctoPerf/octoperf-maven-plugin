@@ -30,9 +30,11 @@ public class ImportJmx extends AbstractOctoPerfMojo {
     final Log log = getLog();
     try {
       final Workspaces workspaces = context.getBean(Workspaces.class);
+      log.info("Workspace: " + workspaceName);
       final String workspaceId = workspaces.getWorkspaceId(workspaceName);
 
       final Projects projects = context.getBean(Projects.class);
+      log.info("Project: " + projectName);
       final String projectId = projects.getProjectId(workspaceId, projectName);
 
       final ProjectFiles files = context.getBean(ProjectFiles.class);

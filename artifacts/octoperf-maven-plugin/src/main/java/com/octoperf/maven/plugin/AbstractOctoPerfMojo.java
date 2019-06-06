@@ -21,16 +21,10 @@ public abstract class AbstractOctoPerfMojo extends AbstractMojo {
   protected String workspaceName = "";
   @Parameter(defaultValue = "Maven", required = true)
   protected String projectName = "";
-  @Parameter(defaultValue = "Scenario", required = true)
+  @Parameter(defaultValue = "Scenario")
   protected String scenarioName = "";
   @Parameter(required = true)
   protected String apiKey = "";
-  @Parameter(defaultValue = "true")
-  protected Boolean isDownloadJUnitReports = true;
-  @Parameter(defaultValue = "true")
-  protected Boolean isDownloadLogs = true;
-  @Parameter(defaultValue = "false")
-  protected Boolean isDownloadJTLs = false;
 
   protected final GenericApplicationContext newContext() {
     StaticLoggerBinder.getSingleton().setMavenLog(getLog());
