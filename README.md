@@ -89,7 +89,7 @@ The following parameters are shared by all the goals:
 |------|------|-------|-------------|----------|---------------|
 | `apiKey` | `String` | `1.0.0` | Your OctoPerf Account API key is required so the plugin can connect to the platform and run tests on your behalf. | `true` | |
 | `workspaceName` | `String` | `1.0.0` | Name of the workspace where to run the script. Workspace name **must be unique**. | `false` | `Default` |
-| `projectName` | `String` | `1.0.0` | Name of the workspace where to run the script. Project name **must be unique**. Project Design and Runtime sections are cleared on each test start. | `false` | `Maven` |
+| `projectName` | `String` | `1.0.0` | Name of the project where to run the script. Project name **must be unique**. | `false` | `Maven` |
 | `serverUrl` | `boolean` | `1.0.0` | URL of the OctoPerf API server. Can be changed to use an Enterprise OctoPerf server. | `false` |  `https://api.octoperf.com` |
 
 ## octoperf:wipe-project
