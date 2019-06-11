@@ -48,10 +48,17 @@ Depending on the goal you plan to use, additional parameters may be required.
 You should specify the version in your project's plugin configuration:
 
 ```xml
-<project>
-  ...
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>pom</packaging>
+  <groupId>com.octoperf</groupId>
+  <artifactId>octoperf-test</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  
   <build>
-    <!-- To use the plugin goals in your POM or parent POM -->
     <plugins>
       <plugin>
         <groupId>com.octoperf</groupId>
@@ -59,13 +66,11 @@ You should specify the version in your project's plugin configuration:
         <version>2.0.0</version>
         <configuration>
           <!-- See configuration below -->
-          ...
         </configuration>
       </plugin>
-      ...
     </plugins>
   </build>
-  ...
+
   <!-- OctoPerf Maven Repository -->
   <pluginRepositories>
   	<pluginRepository>
