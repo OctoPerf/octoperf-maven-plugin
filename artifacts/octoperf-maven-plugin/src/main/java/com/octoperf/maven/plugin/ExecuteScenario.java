@@ -132,6 +132,20 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
           final String progress = String.format("[%.2f%%] ", results.getProgress(benchResult.getId()));
           log.info(progress + nowStr + " - " + printable);
         } else if (TERMINAL_STATES.contains(currentState)) {
+          buildDir.mkdirs();
+
+          if (isDownloadJUnitReports) {
+            junits.saveJUnitReport(buildDir, benchResult.getId());
+          }
+
+          if (isDownloadLogs) {
+            logs.downloadLogFiles(buildDir, benchResult.getId());
+          }
+
+          if (isDownloadJTLs) {
+            logs.downloadJtlFiles(buildDir, benchResult.getId());
+          }
+
           benchResult = null;
           log.info("Test finished with state: " + currentState);
           break;
@@ -139,24 +153,10 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
           log.info("Preparing test.. (" + currentState + ")");
         }
       }
-
     } finally {
       ofNullable(benchResult)
         .map(BenchResult::getId)
         .ifPresent(results::stopTest);
-
-      buildDir.mkdirs();
-      if (isDownloadJUnitReports) {
-        junits.saveJUnitReport(buildDir, benchResult.getId());
-      }
-
-      if (isDownloadLogs) {
-        logs.downloadLogFiles(buildDir, benchResult.getId());
-      }
-
-      if (isDownloadJTLs) {
-        logs.downloadJtlFiles(buildDir, benchResult.getId());
-      }
     }
   }
 }
