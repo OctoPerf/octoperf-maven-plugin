@@ -27,7 +27,7 @@ The following specifies the minimum requirements to run this Maven plugin:
 |  Name |   Description      |
 |-------|-----|
 |Maven |  3.0 |
-| JDK |  1.7|
+| JDK |  11|
 | Memory | No minimum requirement.|
 | Disk Space |  No minimum requirement. |
 
@@ -48,10 +48,17 @@ Depending on the goal you plan to use, additional parameters may be required.
 You should specify the version in your project's plugin configuration:
 
 ```xml
-<project>
-  ...
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>pom</packaging>
+  <groupId>com.octoperf</groupId>
+  <artifactId>octoperf-test</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  
   <build>
-    <!-- To use the plugin goals in your POM or parent POM -->
     <plugins>
       <plugin>
         <groupId>com.octoperf</groupId>
@@ -59,13 +66,11 @@ You should specify the version in your project's plugin configuration:
         <version>2.0.0</version>
         <configuration>
           <!-- See configuration below -->
-          ...
         </configuration>
       </plugin>
-      ...
     </plugins>
   </build>
-  ...
+
   <!-- OctoPerf Maven Repository -->
   <pluginRepositories>
   	<pluginRepository>
@@ -89,7 +94,7 @@ The following parameters are shared by all the goals:
 |------|------|-------|-------------|----------|---------------|
 | `apiKey` | `String` | `1.0.0` | Your OctoPerf Account API key is required so the plugin can connect to the platform and run tests on your behalf. | `true` | |
 | `workspaceName` | `String` | `1.0.0` | Name of the workspace where to run the script. Workspace name **must be unique**. | `false` | `Default` |
-| `projectName` | `String` | `1.0.0` | Name of the workspace where to run the script. Project name **must be unique**. Project Design and Runtime sections are cleared on each test start. | `false` | `Maven` |
+| `projectName` | `String` | `1.0.0` | Name of the project where to run the script. Project name **must be unique**. | `false` | `Maven` |
 | `serverUrl` | `boolean` | `1.0.0` | URL of the OctoPerf API server. Can be changed to use an Enterprise OctoPerf server. | `false` |  `https://api.octoperf.com` |
 
 ## octoperf:wipe-project
