@@ -23,7 +23,6 @@ import java.util.Set;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.octoperf.entity.runtime.BenchResultState.*;
-import static com.octoperf.maven.plugin.threshold.ThresholdSeverity.PASSED;
 import static java.util.Optional.ofNullable;
 import static org.joda.time.DateTime.now;
 import static org.joda.time.format.DateTimeFormat.forPattern;
@@ -48,7 +47,7 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
   @Parameter(defaultValue = "false")
   protected Boolean isDownloadJTLs = false;
   @Parameter
-  protected ThresholdSeverity stopTestIfThreshold = PASSED;
+  protected ThresholdSeverity stopTestIfThreshold = null;
 
   @Override
   public void execute() throws MojoExecutionException {
@@ -108,42 +107,43 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
         workspaceId,
         benchReport
       );
+      final String benchResultId = benchResult.getId();
       log.info("Bench Report: " + reportUrl);
 
       DateTime startTime = null;
       while (true) {
         Thread.sleep(TEN_SECS);
 
-        benchResult = results.find(benchResult.getId());
+        benchResult = results.find(benchResultId);
         final BenchResultState currentState = benchResult.getState();
 
-        if (alarms.hasAlarms(benchResult.getId(), stopTestIfThreshold)) {
-          throw new IOException("Threshold with severity=" + stopTestIfThreshold + " encountered! Aborting test...");
+        if (stopTestIfThreshold != null && alarms.hasAlarms(benchResultId, stopTestIfThreshold)) {
+          throw new IOException("Threshold with severity >= " + stopTestIfThreshold + " encountered! Aborting test...");
         }
 
         if (currentState == RUNNING) {
           final DateTime now = now();
           startTime = firstNonNull(startTime, now);
 
-          final MetricValues values = metrics.getMetrics(benchResult.getId());
+          final MetricValues values = metrics.getMetrics(benchResultId);
           final String printable = metrics.toPrintable(startTime, values);
           final String nowStr = DATE_FORMAT.print(now);
 
-          final String progress = String.format("[%.2f%%] ", results.getProgress(benchResult.getId()));
+          final String progress = String.format("[%.2f%%] ", results.getProgress(benchResultId));
           log.info(progress + nowStr + " - " + printable);
         } else if (TERMINAL_STATES.contains(currentState)) {
           buildDir.mkdirs();
 
           if (isDownloadJUnitReports) {
-            junits.saveJUnitReport(buildDir, benchResult.getId());
+            junits.saveJUnitReport(buildDir, benchResultId);
           }
 
           if (isDownloadLogs) {
-            logs.downloadLogFiles(buildDir, benchResult.getId());
+            logs.downloadLogFiles(buildDir, benchResultId);
           }
 
           if (isDownloadJTLs) {
-            logs.downloadJtlFiles(buildDir, benchResult.getId());
+            logs.downloadJtlFiles(buildDir, benchResultId);
           }
 
           benchResult = null;
