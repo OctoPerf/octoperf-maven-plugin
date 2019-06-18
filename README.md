@@ -9,7 +9,7 @@ OctoPerf Maven plugin has multiple advantages:
 
 The maven plugin is distributed via [OctoPerf Maven Repository](https://github.com/OctoPerf/maven-repository) hosted on GitHub.
 
-**Current version**: `2.0.1`
+**Current version**: `2.0.2`
 
 ## Goals Overview
 
@@ -63,7 +63,7 @@ You should specify the version in your project's plugin configuration:
       <plugin>
         <groupId>com.octoperf</groupId>
         <artifactId>octoperf-maven-plugin</artifactId>
-        <version>2.0.1</version>
+        <version>2.0.2</version>
         <configuration>
           <!-- See configuration below -->
         </configuration>
