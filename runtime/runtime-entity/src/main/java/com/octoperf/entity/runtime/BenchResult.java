@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Value;
-import lombok.experimental.Wither;
+import lombok.With;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BenchResult {
-  @Wither
+  @With
   String id;
   String batchId;
   String scenarioId;
