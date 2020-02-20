@@ -50,11 +50,6 @@ final class JacksonJsonMapperService implements JsonMapperService {
   }
 
   @Override
-  public <T> T fromJson(final String json, final Type type) throws IOException {
-    return mapper.readValue(json, new SimpleTypeReference(type));
-  }
-
-  @Override
   public <T> T fromJson(String json, TypeReference<T> type) throws IOException {
     return mapper.readValue(json, type);
   }

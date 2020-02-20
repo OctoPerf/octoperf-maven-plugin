@@ -2,6 +2,7 @@ package com.octoperf.maven.plugin;
 
 import com.google.common.collect.ImmutableSet;
 import com.octoperf.entity.analysis.report.BenchReport;
+import com.octoperf.entity.analysis.report.BenchReportTemplate;
 import com.octoperf.entity.analysis.report.graph.MetricValues;
 import com.octoperf.entity.runtime.BenchResult;
 import com.octoperf.entity.runtime.BenchResultState;
@@ -19,6 +20,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.support.GenericApplicationContext;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
@@ -48,6 +50,8 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
   protected Boolean isDownloadJTLs = false;
   @Parameter
   protected ThresholdSeverity stopTestIfThreshold = null;
+  @Parameter
+  protected String reportTemplateName = null;
 
   @Override
   public void execute() throws MojoExecutionException {
@@ -68,6 +72,14 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
       final Scenario scenario = scenarios.findByName(projectId, scenarioName);
       scenarios.log(scenario);
 
+      final BenchReportTemplates templates = context.getBean(BenchReportTemplates.class);
+      final Optional<String> templateId = ofNullable(reportTemplateName)
+        .flatMap(name -> templates.find(workspaceId, name))
+        .map(BenchReportTemplate::getId);
+      templateId.ifPresent(id -> {
+        log.info("Report Template: " + reportTemplateName);
+      });
+
       runTest(
         scenarios,
         results,
@@ -77,7 +89,8 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
         context.getBean(BenchLogs.class),
         context.getBean(ThresholdAlarms.class),
         scenario.getId(),
-        workspaceId
+        workspaceId,
+        templateId
       );
     } catch (final IOException | InterruptedException e) {
       log.error(e);
@@ -95,8 +108,9 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
     final BenchLogs logs,
     final ThresholdAlarms alarms,
     final String scenarioId,
-    final String workspaceId) throws IOException, InterruptedException {
-    final BenchReport benchReport = scenarios.startTest(scenarioId);
+    final String workspaceId,
+    final Optional<String> templateId) throws IOException, InterruptedException {
+    final BenchReport benchReport = scenarios.startTest(scenarioId, templateId);
 
     BenchResult benchResult = null;
     try {

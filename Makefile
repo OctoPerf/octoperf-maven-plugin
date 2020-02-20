@@ -8,6 +8,7 @@ MVN = mvn $(POM)
 MVN_REPO ?= $(WORKSPACE)/../maven-repository
 
 clean:
+    rm -f **/pom.xml.versionsBackup
 	$(MVN) clean
 
 test: clean
@@ -23,5 +24,5 @@ deploy: clean
 	$(MVN) clean deploy -DskipTests -DdeployPath=$(MVN_REPO)
 
 version:
-	$(MVN) versions:set -DnewVersion=$(VERSION)
+	$(MVN) versions:set -DgenerateBackupPoms=false -DnewVersion=$(VERSION)
 	rm -f **/pom.xml.versionsBackup

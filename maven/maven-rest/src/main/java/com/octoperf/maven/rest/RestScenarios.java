@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.google.common.base.Charsets.UTF_8;
@@ -94,9 +95,11 @@ final class RestScenarios implements Scenarios {
   }
 
   @Override
-  public BenchReport startTest(final String scenarioId) throws IOException {
+  public BenchReport startTest(
+    final String scenarioId,
+    final Optional<String> templateId) throws IOException {
     return calls
-      .execute(api.run(scenarioId))
+      .execute(api.run(scenarioId, templateId.orElse(null)))
       .orElseThrow(() -> new IOException("Could not start scenarioId=" + scenarioId));
   }
 

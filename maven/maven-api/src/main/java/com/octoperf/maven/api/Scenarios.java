@@ -5,6 +5,7 @@ import com.octoperf.entity.runtime.Scenario;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 public interface Scenarios {
 
@@ -17,7 +18,7 @@ public interface Scenarios {
 
   Scenario findByName(String projectId, String name) throws IOException;
 
-  BenchReport startTest(String scenarioId) throws IOException;
+  BenchReport startTest(String scenarioId, Optional<String> templateId) throws IOException;
 
   void log(Scenario scenario);
 }

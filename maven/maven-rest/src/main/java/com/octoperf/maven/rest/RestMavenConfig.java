@@ -1,5 +1,6 @@
 package com.octoperf.maven.rest;
 
+import com.octoperf.analysis.rest.client.BenchReportTemplatesApi;
 import com.octoperf.analysis.rest.client.JUnitReportApi;
 import com.octoperf.analysis.rest.client.LogApi;
 import com.octoperf.analysis.rest.client.MetricsApi;
@@ -15,8 +16,13 @@ import org.springframework.context.annotation.Configuration;
 class RestMavenConfig {
 
   @Bean
-  HttpServerApi httpServerApi(final SecuredRestApiWrapper wrapper) {
-    return wrapper.create(HttpServerApi.class);
+  BenchReportTemplatesApi benchReportTemplatesApi(final SecuredRestApiWrapper w) {
+    return w.create(BenchReportTemplatesApi.class);
+  }
+
+  @Bean
+  HttpServerApi httpServerApi(final SecuredRestApiWrapper w) {
+    return w.create(HttpServerApi.class);
   }
 
   @Bean
@@ -25,8 +31,8 @@ class RestMavenConfig {
   }
 
   @Bean
-  ProjectFilesApi projectFilesApi(final SecuredRestApiWrapper wrapper) {
-    return wrapper.create(ProjectFilesApi.class);
+  ProjectFilesApi projectFilesApi(final SecuredRestApiWrapper w) {
+    return w.create(ProjectFilesApi.class);
   }
 
   @Bean
@@ -45,8 +51,8 @@ class RestMavenConfig {
   }
 
   @Bean
-  ProjectsApi projectsApi(final SecuredRestApiWrapper wrapper) {
-    return wrapper.create(ProjectsApi.class);
+  ProjectsApi projectsApi(final SecuredRestApiWrapper w) {
+    return w.create(ProjectsApi.class);
   }
 
   @Bean
@@ -55,17 +61,17 @@ class RestMavenConfig {
   }
 
   @Bean
-  VirtualUserApi virtualUsersApi(final SecuredRestApiWrapper wrapper) {
-    return wrapper.create(VirtualUserApi.class);
+  VirtualUserApi virtualUsersApi(final SecuredRestApiWrapper w) {
+    return w.create(VirtualUserApi.class);
   }
 
   @Bean
-  ImportApi importApi(final SecuredRestApiWrapper wrapper) {
-    return wrapper.create(ImportApi.class);
+  ImportApi importApi(final SecuredRestApiWrapper w) {
+    return w.create(ImportApi.class);
   }
 
   @Bean
-  WorkspacesApi workspacesApi(final SecuredRestApiWrapper wrapper) {
-    return wrapper.create(WorkspacesApi.class);
+  WorkspacesApi workspacesApi(final SecuredRestApiWrapper w) {
+    return w.create(WorkspacesApi.class);
   }
 }

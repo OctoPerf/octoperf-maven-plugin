@@ -102,12 +102,6 @@ public class JsonMapperServiceTest {
     assertEquals(bean, mapper.fromJson(JSON_BEAN, new TypeReference<Bean>() {}));
   }
 
-  @Test
-  public void shouldMapJsonToBean2() throws IOException, NoSuchFieldException, SecurityException {
-    assertEquals(bean, mapper.fromJson(JSON_BEAN,
-        JsonMapperServiceTest.class.getDeclaredField("bean").getGenericType()));
-  }
-
   @Test(expected = JsonParseException.class)
   public void shouldThrowJsonParseException() throws IOException {
     assertEquals(bean, mapper.fromJson("cannot be parsed", Bean.class));
