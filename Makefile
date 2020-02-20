@@ -8,7 +8,6 @@ MVN = mvn $(POM)
 MVN_REPO ?= $(WORKSPACE)/../maven-repository
 
 clean:
-    rm -f **/pom.xml.versionsBackup
 	$(MVN) clean
 
 test: clean
