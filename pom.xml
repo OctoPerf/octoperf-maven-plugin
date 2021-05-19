@@ -43,7 +43,7 @@
     <jaxb.version>2.4.0-b180830.0359</jaxb.version>
     <jcabi-maven-slf4j.version>0.9</jcabi-maven-slf4j.version>
     <joda-time.version>2.10.4</joda-time.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
     <junit.addons.version>1.4</junit.addons.version>
     <jsr305.version>3.0.2</jsr305.version>
     <lombok.version>1.18.12</lombok.version>
