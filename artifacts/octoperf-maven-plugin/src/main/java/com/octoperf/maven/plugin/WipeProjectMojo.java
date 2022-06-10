@@ -25,15 +25,23 @@ public class WipeProjectMojo extends AbstractOctoPerfMojo {
       final String projectId = projects.getProjectId(workspaceId, projectName);
 
       final Scenarios scenarios = context.getBean(Scenarios.class);
+      log.info("Wiping scenarios...");
       scenarios.removeAll(projectId);
 
       final VirtualUsers virtualUsers = context.getBean(VirtualUsers.class);
+      log.info("Wiping virtual users...");
       virtualUsers.removeAll(projectId);
 
       final HttpServers servers = context.getBean(HttpServers.class);
+      log.info("Wiping servers...");
       servers.removeAll(projectId);
 
+      final Variables variables = context.getBean(Variables.class);
+      log.info("Wiping variables...");
+      variables.removeAll(projectId);
+
       final ProjectFiles files = context.getBean(ProjectFiles.class);
+      log.info("Wiping project files...");
       files.removeAll(projectId);
     } catch (final IOException e) {
       log.error("", e);

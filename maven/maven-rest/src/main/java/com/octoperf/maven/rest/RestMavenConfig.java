@@ -74,4 +74,9 @@ class RestMavenConfig {
   WorkspacesApi workspacesApi(final SecuredRestApiWrapper w) {
     return w.create(WorkspacesApi.class);
   }
+
+  @Bean
+  VariablesApi variablesApi(final SecuredRestApiWrapper w) {
+    return w.create(VariablesApi.class);
+  }
 }
