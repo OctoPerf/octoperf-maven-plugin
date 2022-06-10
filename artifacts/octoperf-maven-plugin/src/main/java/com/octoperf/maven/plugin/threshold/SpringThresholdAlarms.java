@@ -29,7 +29,7 @@ final class SpringThresholdAlarms implements ThresholdAlarms {
     final ThresholdSeverity severity) throws IOException {
 
     return api
-      .getAlarms(create(parse("application/json"), format(THRESHOLD_REPORT_ITEM, benchResultId)))
+      .getAlarms(create(format(THRESHOLD_REPORT_ITEM, benchResultId), parse("application/json; charset=utf-8")))
       .execute()
       .body()
       .stream()

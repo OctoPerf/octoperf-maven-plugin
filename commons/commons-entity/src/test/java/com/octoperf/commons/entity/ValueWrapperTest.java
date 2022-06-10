@@ -2,7 +2,9 @@ package com.octoperf.commons.entity;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
 
 /**
  * Tests {@link ValueWrapper}.
@@ -18,7 +20,7 @@ public class ValueWrapperTest extends AbstractJsonEntityTest<ValueWrapper<String
 
   @Test
   public void shouldPassEqualsVerifier() {
-    EqualsVerifier.forClass(entity().getClass()).verify();
+    forClass(entity().getClass()).verify();
   }
 
   @Override
@@ -28,7 +30,8 @@ public class ValueWrapperTest extends AbstractJsonEntityTest<ValueWrapper<String
 
   @Override
   protected TypeReference<ValueWrapper<String>> typeReference() {
-    return new TypeReference<ValueWrapper<String>>(){};
+    return new TypeReference<>() {
+    };
   }
 
 }

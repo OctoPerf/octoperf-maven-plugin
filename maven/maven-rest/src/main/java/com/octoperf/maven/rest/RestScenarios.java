@@ -29,6 +29,7 @@ import static java.nio.file.Files.newInputStream;
 import static java.nio.file.StandardOpenOption.READ;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+import static okhttp3.MediaType.parse;
 
 @Slf4j
 @Component
@@ -57,7 +58,7 @@ final class RestScenarios implements Scenarios {
     String projectId,
     final File jsonFile) throws IOException {
     final String json = readFile(jsonFile);
-    final RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+    final RequestBody body = RequestBody.create(json, parse("application/json; charset=utf-8"));
     return calls
       .execute(api.importFromMaven(workspaceId, projectId, body))
       .orElseThrow(() -> new IOException("Could not create scenario from JSON"));

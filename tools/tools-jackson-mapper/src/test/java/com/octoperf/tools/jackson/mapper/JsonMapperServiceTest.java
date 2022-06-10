@@ -11,11 +11,12 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -26,14 +27,16 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {JacksonConfig.class, TestRegistrator.class})
 public class JsonMapperServiceTest {
 
   @Autowired
   private JsonMapperService mapper;
+
   private Bean bean;
   private BeanInterval beanInterval;
   private BeanInstant beanInstant;
@@ -44,7 +47,7 @@ public class JsonMapperServiceTest {
   private static final String JSON_ARRAY = "[\"userId\",\"benchResultId\",1409758020.000000000]";
   private static final Instant TIMESTAMP = Instant.from(LocalDateTime.of(2014, 9, 03, 15, 27).atOffset(ZoneOffset.UTC));
   
-  @Before
+  @BeforeEach
   public void before() {
     bean = Bean.builder().id(Optional.of("id")).fields(Arrays.asList("field1", "field2")).build();
     beanInterval =
@@ -102,9 +105,12 @@ public class JsonMapperServiceTest {
     assertEquals(bean, mapper.fromJson(JSON_BEAN, new TypeReference<Bean>() {}));
   }
 
-  @Test(expected = JsonParseException.class)
-  public void shouldThrowJsonParseException() throws IOException {
-    assertEquals(bean, mapper.fromJson("cannot be parsed", Bean.class));
+  @Test
+  public void shouldThrowJsonParseException() {
+    assertThrows(
+      JsonParseException.class,
+      () -> mapper.fromJson("cannot be parsed", Bean.class)
+    );
   }
   
   @Test

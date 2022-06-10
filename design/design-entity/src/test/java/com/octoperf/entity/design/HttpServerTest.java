@@ -2,7 +2,7 @@ package com.octoperf.entity.design;
 
 import com.google.common.testing.NullPointerTester;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.testing.NullPointerTester.Visibility.PUBLIC;
 import static org.junit.Assert.assertFalse;

@@ -1,6 +1,7 @@
 package com.octoperf.tools.jackson.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -16,15 +17,17 @@ public class JacksonConfig {
   @Bean
   @Primary
   ObjectMapper objectMapper() {
-    final ObjectMapper mapper = new ObjectMapper();
-    mapper.findAndRegisterModules();
-    mapper.setSerializationInclusion(NON_NULL);
-    mapper.enable(SORT_PROPERTIES_ALPHABETICALLY);
-    return mapper;
+    return JsonMapper
+      .builder()
+      .findAndAddModules()
+      .serializationInclusion(NON_NULL)
+      .enable(SORT_PROPERTIES_ALPHABETICALLY)
+      .build();
   }
 
   @Bean
-  JsonMapperService jsonMapperService(final ObjectMapper mapper, final Set<JsonRegistrator> registrators) {
+  JsonMapperService jsonMapperService(final ObjectMapper mapper,
+                                      final Set<JsonRegistrator> registrators) {
     return new JacksonJsonMapperService(mapper, registrators);
   }
 }

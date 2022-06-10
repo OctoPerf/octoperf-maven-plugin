@@ -3,13 +3,13 @@ package com.octoperf.tools.retrofit.security;
 import com.google.common.testing.NullPointerTester;
 import okhttp3.Interceptor;
 import okhttp3.Request;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class APIKeyRestClientAuthenticatorTest {
   private APIKeyRestClientAuthenticator authenticator;
 
@@ -31,7 +31,7 @@ public class APIKeyRestClientAuthenticatorTest {
   @Captor
   ArgumentCaptor<Request> captor;
 
-  @Before
+  @BeforeEach
   public void before() {
     authenticator = new APIKeyRestClientAuthenticator("apiKey");
     request = new Request.Builder().url("https://octoperf.com").build();

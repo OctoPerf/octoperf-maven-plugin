@@ -4,8 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.testing.NullPointerTester;
 import com.google.common.testing.NullPointerTester.Visibility;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
@@ -13,7 +14,7 @@ public class MetricValuesTest {
 
   @Test
   public void shouldPassEqualsVerifier() {
-    EqualsVerifier.forClass(MetricValues.class).verify();
+    forClass(MetricValues.class).verify();
   }
 
   @Test

@@ -7,7 +7,6 @@ import com.octoperf.tools.retrofit.CallService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import org.springframework.stereotype.Component;
@@ -18,6 +17,7 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+import static okhttp3.MediaType.parse;
 import static okhttp3.MultipartBody.Part.createFormData;
 import static okhttp3.RequestBody.create;
 
@@ -46,7 +46,7 @@ final class RestProjectFiles implements ProjectFiles {
     final File folder) {
     final File[] files = firstNonNull(folder.listFiles(), new File[0]);
     for (final File file : files) {
-      final RequestBody requestFile = create(MediaType.parse(PLAIN_TEXT_UTF_8.toString()), file);
+      final RequestBody requestFile = create(file, parse(PLAIN_TEXT_UTF_8.toString()));
       final String filename = file.getName();
       final MultipartBody.Part body = createFormData("file", filename, requestFile);
 

@@ -1,10 +1,10 @@
 package com.octoperf.tools.retrofit;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RetrofitCallServiceTest {
 
   @Mock
@@ -24,8 +24,8 @@ public class RetrofitCallServiceTest {
   private Response<Object> response;
   private CallService service;
 
-  @Before
-  public void before() throws IOException {
+  @BeforeEach
+  public void before() {
     service = new RetrofitCallService();
   }
 

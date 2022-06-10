@@ -2,7 +2,7 @@ package com.octoperf.workspace.entity;
 
 import com.google.common.testing.NullPointerTester;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 

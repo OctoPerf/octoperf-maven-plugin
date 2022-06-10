@@ -3,7 +3,7 @@ package com.octoperf.entity.analysis.report;
 import com.google.common.collect.ImmutableList;
 import com.google.common.testing.NullPointerTester;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.testing.NullPointerTester.Visibility.PACKAGE;
 import static org.junit.Assert.assertFalse;

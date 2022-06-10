@@ -2,21 +2,25 @@ package com.octoperf.tools.retrofit.security;
 
 import com.google.common.testing.NullPointerTester;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
 import retrofit2.Retrofit;
 
 import static com.google.common.testing.NullPointerTester.Visibility.PACKAGE;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.quality.Strictness.LENIENT;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = LENIENT)
 public class OctoperfRetrofitWrapperTest {
 
   @Mock
   RestClientAuthenticator authenticator;
-
 
   Retrofit retrofit;
   OctoperfRetrofitWrapper wrapper;

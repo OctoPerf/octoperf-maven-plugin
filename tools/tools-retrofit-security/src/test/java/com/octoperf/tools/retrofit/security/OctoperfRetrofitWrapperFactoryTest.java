@@ -2,12 +2,15 @@ package com.octoperf.tools.retrofit.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.testing.NullPointerTester;
-import com.octoperf.tools.retrofit.RestApiWrapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
@@ -16,8 +19,10 @@ import java.security.cert.X509Certificate;
 import static com.google.common.testing.NullPointerTester.Visibility.PACKAGE;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
+import static org.mockito.quality.Strictness.LENIENT;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = LENIENT)
 public class OctoperfRetrofitWrapperFactoryTest {
 
   @Mock
@@ -27,12 +32,9 @@ public class OctoperfRetrofitWrapperFactoryTest {
   @Mock
   SSLSocketFactory socketFactory;
 
-  @Mock
-  RestApiWrapper unsecuredWrapper;
-
   OctoperfRetrofitWrapperFactory wrapperFactory;
 
-  @Before
+  @BeforeEach
   public void before() {
     when(trustManager.getAcceptedIssuers()).thenReturn(new X509Certificate[0]);
     wrapperFactory = new OctoperfRetrofitWrapperFactory(objectMapper, trustManager, socketFactory);

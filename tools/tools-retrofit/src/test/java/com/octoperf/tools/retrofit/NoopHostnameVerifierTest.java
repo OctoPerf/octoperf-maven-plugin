@@ -1,6 +1,6 @@
 package com.octoperf.tools.retrofit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.octoperf.tools.retrofit.NoopHostnameVerifier.INSTANCE;
 import static org.junit.Assert.assertTrue;
