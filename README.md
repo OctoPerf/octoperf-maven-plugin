@@ -109,6 +109,7 @@ Wipes the entire project specified with name from property `projectName`, in wor
 - Scenarios,
 - Virtual users,
 - Http servers,
+- variables,
 - and project files.
 
 ### Additional Parameters
