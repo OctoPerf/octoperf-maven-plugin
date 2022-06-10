@@ -9,7 +9,7 @@ OctoPerf Maven plugin has multiple advantages:
 
 The maven plugin is distributed via [OctoPerf Maven Repository](https://github.com/OctoPerf/maven-repository) hosted on GitHub.
 
-**Current version**: `2.1.0`
+**Current version**: `2.2.0`
 
 ## Goals Overview
 
@@ -63,7 +63,7 @@ You should specify the version in your project's plugin configuration:
       <plugin>
         <groupId>com.octoperf</groupId>
         <artifactId>octoperf-maven-plugin</artifactId>
-        <version>2.1.0</version>
+        <version>2.2.0</version>
         <configuration>
           <!-- See configuration below -->
         </configuration>
@@ -152,7 +152,7 @@ The output should look like:
 [INFO] Building octoperf-test 1.0.0-SNAPSHOT
 [INFO] --------------------------------[ pom ]---------------------------------
 [INFO]
-[INFO] --- octoperf-maven-plugin:2.1.0:wipe-project (default-cli) @ octoperf-test ---
+[INFO] --- octoperf-maven-plugin:2.2.0:wipe-project (default-cli) @ octoperf-test ---
 [INFO] Workspace: Personal
 [INFO] Project: Maven
 [INFO] ------------------------------------------------------------------------
@@ -230,7 +230,7 @@ The output should look like:
 [INFO] Building octoperf-test 1.0.0-SNAPSHOT
 [INFO] --------------------------------[ pom ]---------------------------------
 [INFO]
-[INFO] --- octoperf-maven-plugin:2.1.0:import-jmx (default-cli) @ octoperf-test ---
+[INFO] --- octoperf-maven-plugin:2.2.0:import-jmx (default-cli) @ octoperf-test ---
 [INFO] Workspace: Personal
 [INFO] Project: Maven
 [INFO] ------------------------------------------------------------------------
@@ -341,7 +341,7 @@ The output should look like:
 [INFO] Building octoperf-test 1.0.0-SNAPSHOT
 [INFO] --------------------------------[ pom ]---------------------------------
 [INFO]
-[INFO] --- octoperf-maven-plugin:2.1.0:import-scenario (default-cli) @ octoperf-test ---
+[INFO] --- octoperf-maven-plugin:2.2.0:import-scenario (default-cli) @ octoperf-test ---
 [INFO] Workspace: Personal
 [INFO] Project: Maven
 [INFO] ------------------------------------------------------------------------
@@ -370,7 +370,7 @@ Executes the scenario with name specified by `scenarioName` parameter (or the si
 | Name | Type | Since | Description | Required | Default Value |
 |------|------|-------|-------------|----------|---------------|
 | `scenarioName` | `String` | `2.0.0` | Scenario name. If empty, a single scenario within the project is expected to exist. | `false` | `` |
-| `reportTemplateName` | `String` | `2.1.0` | Name of the bench report template to use. Default template is used if none specified. | `` | `` |
+| `reportTemplateName` | `String` | `2.2.0` | Name of the bench report template to use. Default template is used if none specified. | `` | `` |
 | `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
 | `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
 | `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
