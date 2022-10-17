@@ -1,12 +1,10 @@
 package com.octoperf.tools.retrofit.security;
 
 import com.google.common.testing.NullPointerTester;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import retrofit2.Retrofit;
@@ -25,8 +23,8 @@ public class OctoperfRetrofitWrapperTest {
   Retrofit retrofit;
   OctoperfRetrofitWrapper wrapper;
 
-  @Before
-  public void before(){
+  @BeforeEach
+  public void before() {
     retrofit = new Retrofit.Builder().baseUrl("http://localhost").build();
     wrapper = new OctoperfRetrofitWrapper(retrofit, authenticator);
   }
