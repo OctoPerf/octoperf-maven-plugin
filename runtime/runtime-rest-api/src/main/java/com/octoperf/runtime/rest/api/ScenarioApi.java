@@ -24,7 +24,7 @@ public interface ScenarioApi {
     @Body RequestBody body);
 
   @POST("/runtime/scenarios/run/{id}")
-  Call<BenchReport> run(@Path("id") String scenarioId, @Query("templateId") String templateId);
+  Call<BenchReport> run(@Path("id") String scenarioId, @Query("templateId") String templateId, @Query("name") String name);
 
   @GET("/runtime/scenarios/by-project/{projectId}")
   Call<List<Scenario>> list(@Path("projectId") String projectId);

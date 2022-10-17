@@ -1,5 +1,6 @@
 package com.octoperf.maven.rest;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closer;
 import com.octoperf.entity.analysis.report.BenchReport;
@@ -11,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -98,9 +98,16 @@ final class RestScenarios implements Scenarios {
   @Override
   public BenchReport startTest(
     final String scenarioId,
-    final Optional<String> templateId) throws IOException {
+    final Optional<String> templateId,
+    final Optional<String> testName) throws IOException {
     return calls
-      .execute(api.run(scenarioId, templateId.orElse(null)))
+      .execute(
+        api.run(
+          scenarioId,
+          templateId.map(Strings::emptyToNull).orElse(null),
+          testName.map(Strings::emptyToNull).orElse(null)
+        )
+      )
       .orElseThrow(() -> new IOException("Could not start scenarioId=" + scenarioId));
   }
 

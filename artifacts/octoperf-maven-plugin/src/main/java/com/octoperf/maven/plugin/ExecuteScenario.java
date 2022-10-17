@@ -1,5 +1,6 @@
 package com.octoperf.maven.plugin;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.octoperf.entity.analysis.report.BenchReport;
 import com.octoperf.entity.analysis.report.BenchReportTemplate;
@@ -25,6 +26,7 @@ import java.util.Set;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.octoperf.entity.runtime.BenchResultState.*;
+import static java.lang.Thread.sleep;
 import static java.util.Optional.ofNullable;
 import static org.joda.time.DateTime.now;
 import static org.joda.time.format.DateTimeFormat.forPattern;
@@ -52,6 +54,8 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
   protected ThresholdSeverity stopTestIfThreshold = null;
   @Parameter
   protected String reportTemplateName = null;
+  @Parameter
+  protected String testName = "";
 
   @Override
   public void execute() throws MojoExecutionException {
@@ -76,9 +80,7 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
       final Optional<String> templateId = ofNullable(reportTemplateName)
         .flatMap(name -> templates.find(workspaceId, name))
         .map(BenchReportTemplate::getId);
-      templateId.ifPresent(id -> {
-        log.info("Report Template: " + reportTemplateName);
-      });
+      templateId.ifPresent(id -> log.info("Report Template: " + reportTemplateName));
 
       runTest(
         scenarios,
@@ -110,7 +112,11 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
     final String scenarioId,
     final String workspaceId,
     final Optional<String> templateId) throws IOException, InterruptedException {
-    final BenchReport benchReport = scenarios.startTest(scenarioId, templateId);
+    final BenchReport benchReport = scenarios.startTest(
+      scenarioId,
+      templateId,
+      ofNullable(testName)
+    );
 
     BenchResult benchResult = null;
     try {
@@ -126,7 +132,7 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
 
       DateTime startTime = null;
       while (true) {
-        Thread.sleep(TEN_SECS);
+        sleep(TEN_SECS);
 
         benchResult = results.find(benchResultId);
         final BenchResultState currentState = benchResult.getState();

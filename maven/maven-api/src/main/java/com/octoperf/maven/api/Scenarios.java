@@ -18,7 +18,9 @@ public interface Scenarios {
 
   Scenario findByName(String projectId, String name) throws IOException;
 
-  BenchReport startTest(String scenarioId, Optional<String> templateId) throws IOException;
+  BenchReport startTest(String scenarioId,
+                        Optional<String> templateId,
+                        Optional<String> testName) throws IOException;
 
   void log(Scenario scenario);
 }
