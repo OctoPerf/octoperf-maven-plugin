@@ -1,3 +1,5 @@
+![image](https://github.com/OctoPerf/octoperf-maven-plugin/assets/3208716/f06050d2-aa80-44b4-b496-39f76e705a66)
+
 # OctoPerf Maven Plugin
 
 The OctoPerf Maven Plugin let's you run JMeter JMX scripts at scale on OctoPerf Saas or On-Premise platform. 
