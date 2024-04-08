@@ -1,7 +1,6 @@
 package com.octoperf.commons.entity;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
 import static nl.jqno.equalsverifier.EqualsVerifier.forClass;

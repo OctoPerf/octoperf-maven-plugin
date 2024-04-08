@@ -10,6 +10,9 @@ MVN_REPO ?= $(WORKSPACE)/../maven-repository
 clean:
 	$(MVN) clean
 
+check-dependencies:
+	$(MVN) -N versions:display-dependency-updates
+
 test: clean
 	$(MVN) -T $(THREADS) test
 
@@ -21,6 +24,9 @@ install: clean
 
 deploy: clean
 	$(MVN) clean deploy -DskipTests -DdeployPath=$(MVN_REPO)
+
+release:
+	$(MVN) release:prepare release:perform
 
 version:
 	$(MVN) versions:set -DgenerateBackupPoms=false -DnewVersion=$(VERSION)

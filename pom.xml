@@ -24,37 +24,36 @@
     <integration.test.classes>**/*IntegrationTest.java</integration.test.classes>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <java.release.version>11</java.release.version>
+    <java.release.version>17</java.release.version>
     <sonar.java.source>${java.release.version}</sonar.java.source>
     <deployPath>${project.build.directory}/mvn-repo</deployPath>
 
-    <commons.compress.version>1.21</commons.compress.version>
+    <commons.compress.version>1.26.1</commons.compress.version>
     <commons.dbutils.version>1.7</commons.dbutils.version>
-    <commons.io.version>2.11.0</commons.io.version>
+    <commons.io.version>2.16.0</commons.io.version>
     <commons.lang3.version>3.12.0</commons.lang3.version>
     <commons.math3.version>3.6.1</commons.math3.version>
     <commons.text.version>1.10.0</commons.text.version>
     <dagger.version>2.44</dagger.version>
-    <equalsverifier.version>3.10.1</equalsverifier.version>
-    <guava.version>31.1-jre</guava.version>
-    <jackson.version>2.13.4</jackson.version>
+    <equalsverifier.version>3.16.1</equalsverifier.version>
+    <guava.version>33.1.0-jre</guava.version>
+    <jackson.version>2.16.2</jackson.version>
     <javax.annotation.version>1.3.2</javax.annotation.version>
     <jaxb.version>2.4.0-b180830.0359</jaxb.version>
-    <jcabi-maven-slf4j.version>0.10</jcabi-maven-slf4j.version>
     <joda-time.version>2.12.0</joda-time.version>
-    <junit.jupiter.version>5.9.1</junit.jupiter.version>
-    <junit.platform.version>1.9.1</junit.platform.version>
+    <junit.jupiter.version>5.10.2</junit.jupiter.version>
+    <junit.platform.version>1.10.2</junit.platform.version>
     <jsr305.version>3.0.2</jsr305.version>
-    <lombok.version>1.18.24</lombok.version>
+    <lombok.version>1.18.32</lombok.version>
     <maven.version>3.8.6</maven.version>
-    <maven-plugins-annotations.version>3.6.4</maven-plugins-annotations.version>
+    <maven-plugins-annotations.version>3.12.0</maven-plugins-annotations.version>
     <maven.project.version>2.2.1</maven.project.version>
-    <mockito.version>4.8.0</mockito.version>
+    <mockito.version>5.11.0</mockito.version>
     <okhttp3.version>4.10.0</okhttp3.version>
-    <retrofit2.version>2.9.0</retrofit2.version>
-    <slf4j.version>1.7.36</slf4j.version>
-    <spring.version>5.3.23</spring.version>
-    <spring.boot.version>2.7.4</spring.boot.version>
+    <retrofit2.version>2.11.0</retrofit2.version>
+    <slf4j.version>2.0.12</slf4j.version>
+    <spring.version>6.1.5</spring.version>
+    <spring.boot.version>3.2.4</spring.boot.version>
   </properties>
 
   <dependencyManagement>
@@ -74,11 +73,6 @@
             <artifactId>spring-boot-starter-logging</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>com.jcabi</groupId>
-        <artifactId>jcabi-maven-slf4j</artifactId>
-        <version>${jcabi-maven-slf4j.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -219,12 +213,6 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons.io.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>${servlet.api.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -380,11 +368,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M3</version>
+        <version>3.2.5</version>
         <configuration>
-          <argLine>
-            --illegal-access=permit
-          </argLine>
           <includes>
             <include>${integration.test.classes}</include>
           </includes>
@@ -401,11 +386,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
+        <version>3.2.5</version>
         <configuration>
-          <argLine>
-            --illegal-access=permit
-          </argLine>
           <testFailureIgnore>true</testFailureIgnore>
           <excludes>
             <exclude>${integration.test.classes}</exclude>
@@ -419,10 +401,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.13.0</version>
         <configuration>
-          <!-- mandatory to compile project with maven 3.3.9, might be removed with latest version -->
-          <useIncrementalCompilation>false</useIncrementalCompilation>
           <release>${java.release.version}</release>
           <optimize>true</optimize>
         </configuration>
@@ -430,17 +410,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.3.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.6.3</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.3.0</version>
         <executions>
           <execution>
             <goals>
@@ -458,24 +438,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.1</version>
-      </plugin>
-      <plugin>
-        <groupId>com.hello2morrow</groupId>
-        <artifactId>sonargraph-maven-plugin</artifactId>
-        <version>9.9.2</version>
-        <configuration>
-          <activationCode>${sonargraph.activation.code}</activationCode>
-          <autoUpdate>true</autoUpdate>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>create-report</goal>
-              <goal>dynamic-report</goal>
-            </goals>
-          </execution>
-        </executions>
+        <version>3.5.2</version>
       </plugin>
     </plugins>
   </build>

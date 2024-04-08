@@ -1,7 +1,5 @@
 package com.octoperf.maven.api;
 
-import com.octoperf.entity.analysis.report.BenchReport;
-
 /**
  * Provides common reporting operations.
  *  
@@ -14,5 +12,6 @@ public interface BenchReports {
   String getReportUrl(
     final String serverUrl,
     String workspaceId,
-    BenchReport report);
+    String projectId,
+    String reportId);
 }

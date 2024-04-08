@@ -4,7 +4,6 @@ import com.octoperf.tools.retrofit.security.SecuredRestApiWrapper;
 import com.octoperf.tools.retrofit.security.SecuredRestApiWrapperFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration

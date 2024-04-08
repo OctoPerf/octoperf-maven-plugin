@@ -4,7 +4,6 @@ import com.octoperf.Application;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
@@ -25,8 +24,6 @@ public abstract class AbstractOctoPerfMojo extends AbstractMojo {
   protected String apiKey = "";
 
   protected final GenericApplicationContext newContext() {
-    StaticLoggerBinder.getSingleton().setMavenLog(getLog());
-
     System.setProperty("apiKey", apiKey);
     System.setProperty("serverUrl", serverUrl);
     final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();

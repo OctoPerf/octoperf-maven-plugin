@@ -1,7 +1,6 @@
 package com.octoperf.tools.retrofit;
 
 import com.google.common.testing.NullPointerTester;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import retrofit2.Retrofit;

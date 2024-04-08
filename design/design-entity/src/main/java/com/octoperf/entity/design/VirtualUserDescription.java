@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Value;
-import org.joda.time.DateTime;
-
-import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

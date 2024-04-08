@@ -1,7 +1,9 @@
 package com.octoperf.maven.plugin;
 
 import com.octoperf.entity.runtime.Scenario;
-import com.octoperf.maven.api.*;
+import com.octoperf.maven.api.Projects;
+import com.octoperf.maven.api.Scenarios;
+import com.octoperf.maven.api.Workspaces;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;

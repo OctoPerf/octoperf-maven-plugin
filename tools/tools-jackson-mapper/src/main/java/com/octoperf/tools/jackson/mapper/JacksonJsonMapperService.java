@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;

@@ -1,6 +1,5 @@
 package com.octoperf.maven.plugin;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.octoperf.entity.analysis.report.BenchReport;
 import com.octoperf.entity.analysis.report.BenchReportTemplate;
@@ -112,7 +111,7 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
     final String scenarioId,
     final String workspaceId,
     final Optional<String> templateId) throws IOException, InterruptedException {
-    final BenchReport benchReport = scenarios.startTest(
+    final BenchReport report = scenarios.startTest(
       scenarioId,
       templateId,
       ofNullable(testName)
@@ -120,12 +119,13 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
 
     BenchResult benchResult = null;
     try {
-      benchResult = results.find(benchReport.getBenchResultIds().get(0));
+      benchResult = results.find(report.getBenchResultIds().get(0));
 
       final String reportUrl = reports.getReportUrl(
         serverUrl,
         workspaceId,
-        benchReport
+        report.getProjectId(),
+        report.getId()
       );
       final String benchResultId = benchResult.getId();
       log.info("Bench Report: " + reportUrl);
