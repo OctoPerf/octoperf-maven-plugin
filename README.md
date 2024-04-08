@@ -27,7 +27,7 @@ The following specifies the minimum requirements to run this Maven plugin:
 |  Name |   Description      |
 |-------|-----|
 |Maven |  3.0 |
-| JDK |  11|
+| Java |  17|
 | Memory | No minimum requirement.|
 | Disk Space |  No minimum requirement. |
 
