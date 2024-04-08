@@ -376,7 +376,7 @@ Executes the scenario with name specified by `scenarioName` parameter (or the si
 | `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
 | `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
 | `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
-| `testName` | `String` | `2.3.0` | Scenario name. If empty, a single scenario within the project is expected to exist. | `` | `` |
+| `testName` | `String` | `2.3.0` | Test name. If empty, scenario name is used. | `` | `` |
 
 ### Example
 
