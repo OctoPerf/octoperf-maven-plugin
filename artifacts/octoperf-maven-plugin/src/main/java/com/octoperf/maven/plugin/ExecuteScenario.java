@@ -49,6 +49,8 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
   protected Boolean isDownloadLogs = true;
   @Parameter(defaultValue = "false")
   protected Boolean isDownloadJTLs = false;
+  @Parameter(defaultValue = "false")
+  protected Boolean isGeneratePdfReport = false;
   @Parameter
   protected ThresholdSeverity stopTestIfThreshold = null;
   @Parameter
@@ -89,6 +91,7 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
         context.getBean(JunitService.class),
         context.getBean(BenchLogs.class),
         context.getBean(ThresholdAlarms.class),
+        context.getBean(Tasks.class),
         scenario.getId(),
         workspaceId,
         templateId
@@ -108,6 +111,7 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
     final JunitService junits,
     final BenchLogs logs,
     final ThresholdAlarms alarms,
+    final Tasks tasks,
     final String scenarioId,
     final String workspaceId,
     final Optional<String> templateId) throws IOException, InterruptedException {
@@ -164,6 +168,11 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
 
           if (isDownloadJTLs) {
             logs.downloadJtlFiles(buildDir, benchResultId);
+          }
+
+          if (isGeneratePdfReport) {
+            tasks.generatePdfReport(report.getId());
+            logs.downloadPdfFiles(buildDir, benchResultId);
           }
 
           benchResult = null;

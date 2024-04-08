@@ -33,6 +33,7 @@ import static org.apache.commons.io.FileUtils.cleanDirectory;
 final class RestBenchLogs implements BenchLogs {
   private static final String LOG_EXT = ".log";
   private static final String JTL_EXT = ".jtl";
+  private static final String PDF_EXT = ".pdf";
   private static final String LOGS_FOLDER = "logs";
   private static final String JTLS_FOLDER = "jtls";
 
@@ -60,6 +61,16 @@ final class RestBenchLogs implements BenchLogs {
     downloadFiles(
       new File(outputDir, JTLS_FOLDER),
       JTL_EXT,
+      alwaysFalse(),
+      benchResultId
+    );
+  }
+
+  @Override
+  public void downloadPdfFiles(File outputDir, String benchResultId) throws IOException {
+    downloadFiles(
+      outputDir,
+      PDF_EXT,
       alwaysFalse(),
       benchResultId
     );
@@ -104,7 +115,7 @@ final class RestBenchLogs implements BenchLogs {
         input = factory.createCompressorInputStream(input);
       } catch (final CompressorException e) {
         // file is probably not compressed
-        log.warn("Could not decompress filename=" + filename,e);
+        log.debug("Could not decompress filename=" + filename,e);
       }
 
       try {

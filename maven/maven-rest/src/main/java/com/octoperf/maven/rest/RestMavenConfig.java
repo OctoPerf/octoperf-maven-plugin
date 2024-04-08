@@ -7,6 +7,7 @@ import com.octoperf.analysis.rest.client.MetricsApi;
 import com.octoperf.design.rest.api.*;
 import com.octoperf.runtime.rest.api.BenchResultsApi;
 import com.octoperf.runtime.rest.api.ScenarioApi;
+import com.octoperf.task.rest.api.TasksApi;
 import com.octoperf.tools.retrofit.security.SecuredRestApiWrapper;
 import com.octoperf.workspace.rest.api.WorkspacesApi;
 import org.springframework.context.annotation.Bean;
@@ -78,5 +79,10 @@ class RestMavenConfig {
   @Bean
   VariablesApi variablesApi(final SecuredRestApiWrapper w) {
     return w.create(VariablesApi.class);
+  }
+
+  @Bean
+  TasksApi tasksApi(final SecuredRestApiWrapper w) {
+    return w.create(TasksApi.class);
   }
 }

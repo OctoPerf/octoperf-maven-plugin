@@ -12,4 +12,8 @@ public interface BenchLogs {
   void downloadJtlFiles(
     File outputDir,
     String benchResultId) throws IOException;
+
+  void downloadPdfFiles(
+    File outputDir,
+    String benchResultId) throws IOException;
 }

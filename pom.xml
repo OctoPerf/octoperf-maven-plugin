@@ -18,6 +18,8 @@
     <module>runtime</module>
     <module>workspace</module>
     <module>commons</module>
+    <module>task</module>
+    <module>analysis/analysis-task-entity</module>
   </modules>
 
   <properties>
