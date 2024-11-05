@@ -9,7 +9,18 @@ OctoPerf Maven plugin has multiple advantages:
 
 The maven plugin is distributed via [OctoPerf Maven Repository](https://github.com/OctoPerf/maven-repository) hosted on GitHub.
 
-**Current version**: `2.4.0`
+**Current version**: `2.5.0`
+
+## Compatibility
+
+Maven Plugin version compatibility:
+
+`2.5.0+` is compatible with OctoPerf `15.2.0+`.
+
+|  Plugin Version |   OctoPerf Version      |
+|-------|-----|
+| `2.5.0+` |  `15.2.0+` |
+| `up to 2.4.0` | `up to 15.1.X` |
 
 ## Goals Overview
 
