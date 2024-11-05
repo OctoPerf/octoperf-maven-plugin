@@ -396,6 +396,10 @@ Next, configure octoperf-maven-plugin in `pom.xml` with the following parameters
     <workspaceName>WORKSPACE_NAME</workspaceName>
     <projectName>PROJECT_NAME</projectName>
     <scenarioName>SCENARIO_NAME</scenarioName>
+    <!-- These properties will override already existing properties (optional) -->
+    <properties>
+        <key>value</key>
+    </properties>
 </configuration>
 ```
 
