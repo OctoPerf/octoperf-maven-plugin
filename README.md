@@ -420,6 +420,33 @@ Please replace the placeholders with the relevant parameters. Once done, run the
 mvn octoperf:execute-scenario
 ```
 
+### Properties from Command-Line
+
+Properties can be passed by command-line by defining variables in the `pom.xml`, like in this example:
+
+```xml
+<configuration>
+    <apiKey>YOUR_API_KEY</apiKey>
+    <workspaceName>WORKSPACE_NAME</workspaceName>
+    <projectName>PROJECT_NAME</projectName>
+    <scenarioName>SCENARIO_NAME</scenarioName>
+    <!-- These properties will override already existing properties (optional) -->
+    <properties>
+        <key>${myVariable}</key>
+    </properties>
+</configuration>
+```
+
+And running command-line:
+
+```bash
+mvn octoperf:execute-scenario -DmyVariable=value
+```
+
+Maven will replace `${myVariable}` by `value` in your `pom.xml`. 
+
+### Example Output
+
 The test should start within a few minutes. Here is an example console output of a test run using OctoPerf Maven Plugin:
 
 ```bash
