@@ -20,6 +20,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.context.support.GenericApplicationContext;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -57,6 +59,8 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
   protected String reportTemplateName = null;
   @Parameter
   protected String testName = "";
+  @Parameter
+  protected Map<String, String> properties = new HashMap<>();
 
   @Override
   public void execute() throws MojoExecutionException {
@@ -118,7 +122,8 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
     final BenchReport report = scenarios.startTest(
       scenarioId,
       templateId,
-      ofNullable(testName)
+      ofNullable(testName),
+      properties
     );
 
     BenchResult benchResult = null;

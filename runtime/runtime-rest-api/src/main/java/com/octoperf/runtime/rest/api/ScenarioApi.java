@@ -1,6 +1,7 @@
 package com.octoperf.runtime.rest.api;
 
 import com.octoperf.entity.analysis.report.BenchReport;
+import com.octoperf.entity.runtime.PropertiesSettings;
 import com.octoperf.entity.runtime.Scenario;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -23,7 +24,11 @@ public interface ScenarioApi {
     @Body RequestBody body);
 
   @POST("/runtime/scenarios/run/{id}")
-  Call<BenchReport> run(@Path("id") String scenarioId, @Query("templateId") String templateId, @Query("name") String name);
+  Call<BenchReport> run(
+    @Body PropertiesSettings settings,
+    @Path("id") String scenarioId,
+    @Query("templateId") String templateId,
+    @Query("name") String name);
 
   @GET("/runtime/scenarios/by-project/{projectId}")
   Call<List<Scenario>> list(@Path("projectId") String projectId);

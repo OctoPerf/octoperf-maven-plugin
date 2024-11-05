@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closer;
 import com.octoperf.entity.analysis.report.BenchReport;
+import com.octoperf.entity.runtime.PropertiesSettings;
 import com.octoperf.entity.runtime.Scenario;
 import com.octoperf.maven.api.Scenarios;
 import com.octoperf.runtime.rest.api.ScenarioApi;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -99,10 +101,12 @@ final class RestScenarios implements Scenarios {
   public BenchReport startTest(
     final String scenarioId,
     final Optional<String> templateId,
-    final Optional<String> testName) throws IOException {
+    final Optional<String> testName,
+    final Map<String, String> properties) throws IOException {
     return calls
       .execute(
         api.run(
+          new PropertiesSettings(properties),
           scenarioId,
           templateId.map(Strings::emptyToNull).orElse(null),
           testName.map(Strings::emptyToNull).orElse(null)

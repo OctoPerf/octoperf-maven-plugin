@@ -378,6 +378,7 @@ Executes the scenario with name specified by `scenarioName` parameter (or the si
 | `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
 | `testName` | `String` | `2.4.0` | Test name. If empty, scenario name is used. | `` | `` |
 | `isGeneratePdfReport` | `boolean` | `2.4.0` | Should the PDF report be generated and downloaded into `${project.basedir}/target/`. | `false` |  `false` |
+| `properties` | `Map<String, String>` | `2.5.0` | Map of properties to pass when executing the test | `false` |  `` |
 
 ### Example
 
