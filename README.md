@@ -74,7 +74,7 @@ You should specify the version in your project's plugin configuration:
       <plugin>
         <groupId>com.octoperf</groupId>
         <artifactId>octoperf-maven-plugin</artifactId>
-        <version>2.4.0</version>
+        <version>2.5.0</version>
         <configuration>
           <!-- See configuration below -->
         </configuration>
@@ -164,7 +164,7 @@ The output should look like:
 [INFO] Building octoperf-test 1.0.0-SNAPSHOT
 [INFO] --------------------------------[ pom ]---------------------------------
 [INFO]
-[INFO] --- octoperf-maven-plugin:2.4.0:wipe-project (default-cli) @ octoperf-test ---
+[INFO] --- octoperf-maven-plugin:2.5.0:wipe-project (default-cli) @ octoperf-test ---
 [INFO] Workspace: Personal
 [INFO] Project: Maven
 [INFO] ------------------------------------------------------------------------
@@ -242,7 +242,7 @@ The output should look like:
 [INFO] Building octoperf-test 1.0.0-SNAPSHOT
 [INFO] --------------------------------[ pom ]---------------------------------
 [INFO]
-[INFO] --- octoperf-maven-plugin:2.4.0:import-jmx (default-cli) @ octoperf-test ---
+[INFO] --- octoperf-maven-plugin:2.5.0:import-jmx (default-cli) @ octoperf-test ---
 [INFO] Workspace: Personal
 [INFO] Project: Maven
 [INFO] ------------------------------------------------------------------------
@@ -353,7 +353,7 @@ The output should look like:
 [INFO] Building octoperf-test 1.0.0-SNAPSHOT
 [INFO] --------------------------------[ pom ]---------------------------------
 [INFO]
-[INFO] --- octoperf-maven-plugin:2.4.0:import-scenario (default-cli) @ octoperf-test ---
+[INFO] --- octoperf-maven-plugin:2.5.0:import-scenario (default-cli) @ octoperf-test ---
 [INFO] Workspace: Personal
 [INFO] Project: Maven
 [INFO] ------------------------------------------------------------------------
