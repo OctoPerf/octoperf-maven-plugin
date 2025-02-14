@@ -11,7 +11,7 @@ clean:
 	$(MVN) clean
 
 check-dependencies:
-	$(MVN) -N versions:display-dependency-updates
+	mvn -N versions:display-dependency-updates -Dmaven.version.ignore=.*-M.*,.*-alpha.*,.*alpha.*,.*beta.*,.*rc.*,.*RC.*
 
 test: clean
 	$(MVN) -T $(THREADS) test

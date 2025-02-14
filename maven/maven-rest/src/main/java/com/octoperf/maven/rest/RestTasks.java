@@ -1,17 +1,18 @@
 package com.octoperf.maven.rest;
 
 import com.octoperf.analysis.task.entity.PrintReportTask;
-import com.octoperf.analysis.task.entity.PrintReportTaskResult;
 import com.octoperf.entity.analysis.report.ExportReportConfig;
 import com.octoperf.maven.api.Tasks;
 import com.octoperf.task.entity.TaskResult;
 import com.octoperf.task.rest.api.TasksApi;
 import com.octoperf.tools.retrofit.CallService;
+import com.octoperf.tools.retrofit.NoopCallBack;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import retrofit2.Callback;
 
 import java.io.IOException;
 import java.util.Map;
@@ -51,6 +52,8 @@ final class RestTasks implements Tasks {
   private static final int MAX_RETRIES = 60;
   private static final long SLEEP_MILLIS = 5000L;
 
+  private static final Callback<TaskResult> NOOP = new NoopCallBack<>();
+
   @NonNull
   TasksApi api;
   @NonNull
@@ -80,7 +83,7 @@ final class RestTasks implements Tasks {
 
       Thread.sleep(SLEEP_MILLIS);
 
-      result = calls.execute(api.getResult(taskId));
+      result = calls.execute(api.getResult(taskId), NOOP);
 
     } while (result.isEmpty() && i < MAX_RETRIES);
   }
