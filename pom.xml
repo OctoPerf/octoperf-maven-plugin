@@ -31,7 +31,7 @@
     <commons.compress.version>1.27.1</commons.compress.version>
     <commons.dbutils.version>1.7</commons.dbutils.version>
     <commons.io.version>2.18.0</commons.io.version>
-    <commons.lang3.version>3.17.0</commons.lang3.version>
+    <commons.lang3.version>3.18.0</commons.lang3.version>
     <commons.math3.version>3.6.1</commons.math3.version>
     <commons.text.version>1.13.0</commons.text.version>
     <dagger.version>2.44</dagger.version>
