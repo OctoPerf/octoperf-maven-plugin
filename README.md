@@ -386,7 +386,7 @@ Executes the scenario with name specified by `scenarioName` parameter (or the si
 | `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
 | `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
 | `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
-| `downloadOtherFilesWithEx` | `boolean` | `2.6.0` | Download files to folder `${project.basedir}/target/other`. Comma separated file extensions. Example: 'csv,png' | `false` |  `` |
+| `downloadOtherFilesWithExt` | `boolean` | `2.6.0` | Download files to folder `${project.basedir}/target/other`. Comma separated file extensions. Example: 'csv,png' | `false` |  `` |
 | `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
 | `testName` | `String` | `2.4.0` | Test name. If empty, scenario name is used. | `` | `` |
 | `isGeneratePdfReport` | `boolean` | `2.4.0` | Should the PDF report be generated and downloaded into `${project.basedir}/target/`. | `false` |  `false` |
