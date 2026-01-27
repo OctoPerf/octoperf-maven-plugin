@@ -1,5 +1,6 @@
 package com.octoperf.maven.rest;
 
+import com.google.common.base.Splitter;
 import com.google.common.io.Closer;
 import com.octoperf.analysis.rest.client.LogApi;
 import com.octoperf.maven.api.BenchLogs;
@@ -15,10 +16,9 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
-import static com.google.common.base.Predicates.alwaysFalse;
 import static java.nio.file.Files.newOutputStream;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
@@ -36,6 +36,8 @@ final class RestBenchLogs implements BenchLogs {
   private static final String PDF_EXT = ".pdf";
   private static final String LOGS_FOLDER = "logs";
   private static final String JTLS_FOLDER = "jtls";
+  private static final String OTHER_FOLDER = "other";
+  public static final Splitter COMA_SPLITTER = Splitter.on(',').trimResults();
 
   @NonNull
   LogApi api;
@@ -43,13 +45,24 @@ final class RestBenchLogs implements BenchLogs {
   CallService calls;
 
   @Override
+  public void downloadOtherFiles(
+    final File outputDir,
+    final String extensions,
+    final String benchResultId) throws IOException {
+    downloadFiles(
+      new File(outputDir, OTHER_FOLDER),
+      COMA_SPLITTER.splitToList(extensions),
+      benchResultId
+    );
+  }
+
+  @Override
   public void downloadLogFiles(
     final File outputDir,
     final String benchResultId) throws IOException {
     downloadFiles(
       new File(outputDir, LOGS_FOLDER),
-      LOG_EXT,
-      f -> f.endsWith("-agent" + LOG_EXT),
+      List.of(LOG_EXT),
       benchResultId
     );
   }
@@ -60,8 +73,7 @@ final class RestBenchLogs implements BenchLogs {
     final String benchResultId) throws IOException {
     downloadFiles(
       new File(outputDir, JTLS_FOLDER),
-      JTL_EXT,
-      alwaysFalse(),
+      List.of(JTL_EXT),
       benchResultId
     );
   }
@@ -70,35 +82,29 @@ final class RestBenchLogs implements BenchLogs {
   public void downloadPdfFiles(File outputDir, String benchResultId) throws IOException {
     downloadFiles(
       outputDir,
-      PDF_EXT,
-      alwaysFalse(),
+      List.of(PDF_EXT),
       benchResultId
     );
   }
 
   private void downloadFiles(
-    final File logsFolder,
-    final String extension,
-    final Predicate<String> filter,
+    final File folder,
+    final List<String> extensions,
     final String benchResultId) throws IOException {
-    log.info("Downloading '*."+extension+"' Files into '"+logsFolder+"'...");
+    log.info("Downloading " + extensions + " Files into '" + folder + "'...");
     final Set<String> files = api.getFiles(benchResultId).execute().body();
     log.info("Remote Files: " + files);
 
-    logsFolder.mkdirs();
-    log.info("Cleaning folder: '" + logsFolder + "'");
-    cleanDirectory(logsFolder);
+    folder.mkdirs();
+    log.info("Cleaning folder: '" + folder + "'");
+    cleanDirectory(folder);
 
     for(final String filename : files) {
       String outputFilename = filename.replace(".gz", "");
-      if (filter.test(filename)) {
-        // Skip filtered elements
-        continue;
-      }
 
       final File logFile;
-      if (outputFilename.endsWith(extension)) {
-        logFile = new File(logsFolder, outputFilename);
+      if (extensions.stream().anyMatch(outputFilename::endsWith)) {
+        logFile = new File(folder, outputFilename);
       } else {
         continue;
       }

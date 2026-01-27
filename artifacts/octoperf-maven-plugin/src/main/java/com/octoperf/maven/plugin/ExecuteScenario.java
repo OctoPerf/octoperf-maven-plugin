@@ -54,6 +54,8 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
   @Parameter(defaultValue = "false")
   protected Boolean isGeneratePdfReport = false;
   @Parameter
+  protected String downloadOtherFilesWithExt = "";
+  @Parameter
   protected ThresholdSeverity stopTestIfThreshold = null;
   @Parameter
   protected String reportTemplateName = null;
@@ -179,6 +181,8 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
             tasks.generatePdfReport(report.getId());
             logs.downloadPdfFiles(buildDir, benchResultId);
           }
+
+          logs.downloadOtherFiles(buildDir, downloadOtherFilesWithExt, benchResultId);
 
           benchResult = null;
           log.info("Test finished with state: " + currentState);
