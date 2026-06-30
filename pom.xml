@@ -37,7 +37,7 @@
     <dagger.version>2.44</dagger.version>
     <equalsverifier.version>3.19</equalsverifier.version>
     <guava.version>33.4.0-jre</guava.version>
-    <jackson.version>2.18.2</jackson.version>
+    <jackson.version>2.22.0</jackson.version>
     <javax.annotation.version>1.3.2</javax.annotation.version>
     <jaxb.version>2.4.0-b180830.0359</jaxb.version>
     <joda-time.version>2.13.1</joda-time.version>
