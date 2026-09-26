@@ -45,7 +45,7 @@ public class ImportJmx extends AbstractOctoPerfMojo {
 
     } catch (final IOException e) {
       log.error(e);
-      throw new MojoExecutionException("", e);
+      throw new MojoExecutionException(e.getMessage(), e);
     }
   }
 }

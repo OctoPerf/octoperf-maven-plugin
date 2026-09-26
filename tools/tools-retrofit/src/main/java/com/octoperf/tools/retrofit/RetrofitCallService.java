@@ -1,6 +1,7 @@
 package com.octoperf.tools.retrofit;
 
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +36,25 @@ final class RetrofitCallService implements CallService {
       response
         .map(Response::errorBody)
         .ifPresent(ResponseBody::close);
+    }
+  }
+
+  @Override
+  public <T> T executeOrThrow(final Call<T> call) throws IOException {
+    final Response<T> response = call.execute();
+    final Request request = call.request();
+    if (response.isSuccessful()) {
+      return Optional
+        .ofNullable(response.body())
+        .orElseThrow(() -> new IOException("Empty response to " + request.method() + " " + request.url()));
+    }
+    throw new IOException("HTTP " + response.code() + " on " + request.method() + " " + request.url() + ": "
+      + errorMessage(response));
+  }
+
+  private static String errorMessage(final Response<?> response) throws IOException {
+    try (ResponseBody body = response.errorBody()) {
+      return body == null ? response.message() : body.string();
     }
   }
 }

@@ -63,6 +63,17 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
   protected String testName = "";
   @Parameter
   protected Map<String, String> properties = new HashMap<>();
+  /**
+   * Fails the build when the test ends in any state but {@code FINISHED}: {@code ERROR}, {@code ABORTED}.
+   */
+  @Parameter(defaultValue = "true")
+  protected Boolean failIfNotFinished = true;
+  /**
+   * Stops the test and fails the build when it has not ended after that many minutes; {@code 0} waits forever,
+   * even on a state a newer server reports and this plugin does not know.
+   */
+  @Parameter(defaultValue = "0")
+  protected long timeoutMinutes = 0;
 
   @Override
   public void execute() throws MojoExecutionException {
@@ -104,7 +115,7 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
       );
     } catch (final IOException | InterruptedException e) {
       log.error(e);
-      throw new MojoExecutionException("", e);
+      throw new MojoExecutionException(e.getMessage(), e);
     }
   }
 
@@ -129,6 +140,7 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
     );
 
     BenchResult benchResult = null;
+    final DateTime deadline = timeoutMinutes > 0 ? now().plusMinutes((int) timeoutMinutes) : null;
     try {
       benchResult = results.find(report.getBenchResultIds().get(0));
 
@@ -147,6 +159,10 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
 
         benchResult = results.find(benchResultId);
         final BenchResultState currentState = benchResult.getState();
+
+        if (deadline != null && now().isAfter(deadline) && !TERMINAL_STATES.contains(currentState)) {
+          throw new IOException("Test did not end within " + timeoutMinutes + " minutes! Aborting test...");
+        }
 
         if (stopTestIfThreshold != null && alarms.hasAlarms(benchResultId, stopTestIfThreshold)) {
           throw new IOException("Threshold with severity >= " + stopTestIfThreshold + " encountered! Aborting test...");
@@ -186,7 +202,12 @@ public class ExecuteScenario extends AbstractOctoPerfMojo {
 
           benchResult = null;
           log.info("Test finished with state: " + currentState);
+          if (failIfNotFinished && currentState != FINISHED) {
+            throw new IOException("Test ended in state " + currentState);
+          }
           break;
+        } else if (currentState == UNKNOWN) {
+          log.warn("The server reports a state this plugin does not know: set timeoutMinutes to bound the wait");
         } else {
           log.info("Preparing test.. (" + currentState + ")");
         }
