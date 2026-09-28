@@ -37,7 +37,7 @@ final class RestBenchLogs implements BenchLogs {
   private static final String LOGS_FOLDER = "logs";
   private static final String JTLS_FOLDER = "jtls";
   private static final String OTHER_FOLDER = "other";
-  public static final Splitter COMA_SPLITTER = Splitter.on(',').trimResults();
+  public static final Splitter COMA_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
 
   @NonNull
   LogApi api;
@@ -49,11 +49,10 @@ final class RestBenchLogs implements BenchLogs {
     final File outputDir,
     final String extensions,
     final String benchResultId) throws IOException {
-    downloadFiles(
-      new File(outputDir, OTHER_FOLDER),
-      COMA_SPLITTER.splitToList(extensions),
-      benchResultId
-    );
+    final List<String> wanted = COMA_SPLITTER.splitToList(extensions);
+    if (!wanted.isEmpty()) {
+      downloadFiles(new File(outputDir, OTHER_FOLDER), wanted, benchResultId);
+    }
   }
 
   @Override

@@ -6,9 +6,11 @@ import com.octoperf.analysis.rest.client.LogApi;
 import com.octoperf.analysis.rest.client.MetricsApi;
 import com.octoperf.design.rest.api.*;
 import com.octoperf.runtime.rest.api.BenchResultsApi;
+import com.octoperf.runtime.rest.api.K6ScenarioApi;
 import com.octoperf.runtime.rest.api.ScenarioApi;
 import com.octoperf.task.rest.api.TasksApi;
 import com.octoperf.tools.retrofit.security.SecuredRestApiWrapper;
+import com.octoperf.workspace.rest.api.DockerProvidersApi;
 import com.octoperf.workspace.rest.api.WorkspacesApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -84,5 +86,15 @@ class RestMavenConfig {
   @Bean
   TasksApi tasksApi(final SecuredRestApiWrapper w) {
     return w.create(TasksApi.class);
+  }
+
+  @Bean
+  K6ScenarioApi k6ScenarioApi(final SecuredRestApiWrapper w) {
+    return w.create(K6ScenarioApi.class);
+  }
+
+  @Bean
+  DockerProvidersApi dockerProvidersApi(final SecuredRestApiWrapper w) {
+    return w.create(DockerProvidersApi.class);
   }
 }

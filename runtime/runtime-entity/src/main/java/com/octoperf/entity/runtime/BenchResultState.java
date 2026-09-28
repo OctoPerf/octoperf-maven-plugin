@@ -1,7 +1,6 @@
 package com.octoperf.entity.runtime;
 
-
-
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 
 public enum BenchResultState {
   CREATED,
@@ -12,5 +11,8 @@ public enum BenchResultState {
   RUNNING,
   FINISHED,
   ABORTED,
-  ERROR
+  ERROR,
+  /** A state a newer server reports. */
+  @JsonEnumDefaultValue
+  UNKNOWN
 }

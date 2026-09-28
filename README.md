@@ -9,7 +9,7 @@ OctoPerf Maven plugin has multiple advantages:
 
 The maven plugin is distributed via [OctoPerf Maven Repository](https://github.com/OctoPerf/maven-repository) hosted on GitHub.
 
-**Current version**: `2.6.0`
+**Current version**: `2.7.0`
 
 ## Compatibility
 
@@ -19,6 +19,7 @@ Maven Plugin version compatibility:
 
 |  Plugin Version |   OctoPerf Version      |
 |-------|-----|
+| `2.7.0+` |  `15.2.0+`; `import-k6` needs `<OCTOPERF_VERSION>+` |
 | `2.5.0+` |  `15.2.0+` |
 | `up to 2.4.0` | `up to 15.1.X` |
 
@@ -29,6 +30,7 @@ The OctoPerf plugin has the following goals:
 - `octoperf:wipe-project`: Deletes all virtual users, files and scenarios within the project,
 - `octoperf:import-jmx`: Imports JMeter JMX Project along with resource files (like csvs etc.) on OctoPerf platform,
 - `octoperf:import-scenario`: Imports `scenario.json` on OctoPerf platform,
+- `octoperf:import-k6`: Imports a K6 script and creates the scenario reproducing the load its `options` declare,
 - `octoperf:execute-scenario`: Executes the scenario with the specified name (or the previously imported scenario if no name specified).
 
 ## System Requirements
@@ -74,7 +76,7 @@ You should specify the version in your project's plugin configuration:
       <plugin>
         <groupId>com.octoperf</groupId>
         <artifactId>octoperf-maven-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>2.7.0</version>
         <configuration>
           <!-- See configuration below -->
         </configuration>
@@ -366,6 +368,70 @@ The output should look like:
 
 Browse to OctoPerf Platform and check the relevant workspace / project contain the imported scenario.
 
+## octoperf:import-k6
+
+### Summary
+
+**Full Name**: `com.octoperf:octoperf-maven-plugin:import-k6`
+**Description**:
+
+Imports a K6 script as a virtual user, then creates the scenario reproducing the load the script's `options`
+declare, one user profile per K6 scenario.
+
+The options are resolved on the build machine, by `k6 inspect --execution-requirements <entrypoint>`: `k6` must be
+installed there, unless `k6OptionsFile` points at that command's output. The platform only converts the resolved
+options, it never runs the script.
+
+| K6 | OctoPerf user profile |
+|----|-----------------------|
+| `vus` + `duration`, `constant-vus` | constant load for `duration` |
+| `stages`, `ramping-vus` | one load point per stage |
+| `per-vu-iterations` | the iterations of each virtual user, within `maxDuration` |
+| `shared-iterations` | approximated: the iterations divided by the virtual users |
+| `startTime`, `exec`, `env`, `gracefulStop` | the profile's start delay, function, environment and graceful stop |
+| `constant-arrival-rate`, `ramping-arrival-rate` | **not converted**: no profile is created |
+
+| `startTime` of `per-vu-iterations` / `shared-iterations` | dropped: the virtual users start with the test |
+| `gracefulRampDown` | dropped: ramped-down virtual users stop at once |
+| scenario `tags` | dropped |
+
+Every part of the load that did not cross over as it is — not converted, approximated or dropped — gets logged as a
+warning, and fails the build unless `failOnUnconverted` is `false`. The build fails anyway when nothing converted.
+
+**WARNING**:
+First, wipe the project. That way, you won't have multiple virtual users or scenarios with the same name.
+
+#### Additional Parameters
+
+| Name | Type | Since | Description | Required | Default Value |
+|------|------|-------|-------------|----------|---------------|
+| `k6Entrypoint` | `String` | `2.7.0` | The K6 script run by the virtual user. | `false` | `${project.basedir}/script.js` |
+| `k6Modules` | `List<String>` | `2.7.0` | The other scripts the entrypoint imports, all under the entrypoint's folder. Each is uploaded under its path relative to that folder. | `false` | |
+| `providerName` | `String` | `2.7.0` | Name of an enabled load generator provider, as listed in the workspace. | `true` | |
+| `location` | `String` | `2.7.0` | Location of the provider every user profile runs from. | `true` | |
+| `scenarioName` | `String` | `2.7.0` | Name of the created scenario, the one `execute-scenario` runs by default. | `false` | `Scenario` |
+| `k6Executable` | `String` | `2.7.0` | The `k6` binary to run: a bare name is looked up on the `PATH`, a relative path is the project's. | `false` | `k6` |
+| `k6OptionsFile` | `String` | `2.7.0` | The output of `k6 inspect --execution-requirements`, to read instead of running `k6`. | `false` | |
+| `failOnUnconverted` | `boolean` | `2.7.0` | Fails the build when part of the load did not convert as it is. | `false` | `true` |
+
+### Example
+
+```xml
+<configuration>
+  <apiKey>YOUR_API_KEY</apiKey>
+  <workspaceName>WORKSPACE_NAME</workspaceName>
+  <projectName>PROJECT_NAME</projectName>
+  <providerName>OctoPerf</providerName>
+  <location>eu-west-1</location>
+</configuration>
+```
+
+With `script.js` next to the `pom.xml`, import it and run the scenario it describes:
+
+```bash
+mvn octoperf:wipe-project octoperf:import-k6 octoperf:execute-scenario
+```
+
 ## octoperf:execute-scenario
 
 ### Summary
@@ -386,11 +452,13 @@ Executes the scenario with name specified by `scenarioName` parameter (or the si
 | `isDownloadJUnitReports` | `boolean` | `1.0.0` | Should the JUnit report be downloaded at the end of the test. Junit report is downloaded to `${project.basedir}/target/junit-report.xml`. | `false` |  `true` |
 | `isDownloadLogs` | `boolean` | `1.0.0` | Should the JMeter logs be downloaded at the end of the test. Logs are downloaded to `${project.basedir}/target/logs`. | `false` |  `true` |
 | `isDownloadJTLs` | `boolean` | `1.0.0` | Should the JMeter JTL result files be downloaded at the end of the test. JTLs are downloaded to `${project.basedir}/target/jtls`. | `false` |  `false` |
-| `downloadOtherFilesWithExt` | `boolean` | `2.6.0` | Download files to folder `${project.basedir}/target/other`. Comma separated file extensions. Example: 'csv,png' | `false` |  `` |
+| `downloadOtherFilesWithExt` | `String` | `2.6.0` | Download files to folder `${project.basedir}/target/other`. Comma separated file extensions. Example: 'csv,png' | `false` |  `` |
 | `stopTestIfThreshold` | `String` | `2.0.0` | Stops the tests if an alarm with this severity is raised. Set to `WARNING` or `CRITICAL`. | `false` |  `` |
 | `testName` | `String` | `2.4.0` | Test name. If empty, scenario name is used. | `` | `` |
 | `isGeneratePdfReport` | `boolean` | `2.4.0` | Should the PDF report be generated and downloaded into `${project.basedir}/target/`. | `false` |  `false` |
 | `properties` | `Map<String, String>` | `2.5.0` | Map of properties to pass when executing the test | `false` |  `` |
+| `failIfNotFinished` | `boolean` | `2.7.0` | Fails the build when the test ends in `ERROR` or `ABORTED`. **Breaking**: up to 2.6.0, such a test ended the build in success. | `false` | `true` |
+| `timeoutMinutes` | `long` | `2.7.0` | Stops the test and fails the build when it has not ended after that many minutes. `0` waits forever, even on a state a newer server reports and this plugin does not know. | `false` | `0` |
 
 ### Example
 

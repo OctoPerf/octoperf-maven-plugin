@@ -1,7 +1,9 @@
 package com.octoperf.tools.retrofit;
 
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,5 +84,33 @@ public class RetrofitCallServiceTest {
     final Optional<Object> execute = service.execute(call, callback);
     Assertions.assertFalse(execute.isPresent());
     verify(callback).onFailure(call, e);
+  }
+
+  @Test
+  void shouldReturnTheBodyOfASuccessfulResponse() throws IOException {
+    final Object body = new Object();
+    when(call.execute()).thenReturn(Response.success(body));
+    Assertions.assertSame(body, service.executeOrThrow(call));
+  }
+
+  @Test
+  void shouldFailWithTheMessageTheServerAnswered() throws IOException {
+    when(request.method()).thenReturn("POST");
+    when(call.execute()).thenReturn(Response.error(400, ResponseBody.create("No K6 Virtual User", MediaType.get("text/plain"))));
+    final IOException error = Assertions.assertThrows(IOException.class, () -> service.executeOrThrow(call));
+    Assertions.assertTrue(error.getMessage().contains("HTTP 400 on POST https://octoperf.com/"));
+    Assertions.assertTrue(error.getMessage().endsWith("No K6 Virtual User"));
+  }
+
+  @Test
+  void shouldFailOnASuccessfulResponseWithoutBody() throws IOException {
+    when(call.execute()).thenReturn(Response.success(null));
+    Assertions.assertThrows(IOException.class, () -> service.executeOrThrow(call));
+  }
+
+  @Test
+  void shouldFailWhenTheCallFails() throws IOException {
+    when(call.execute()).thenThrow(new IOException("connection refused"));
+    Assertions.assertThrows(IOException.class, () -> service.executeOrThrow(call));
   }
 }
