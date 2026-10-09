@@ -316,8 +316,8 @@ This is a very simple scenario configured as following:
 
 - Login on OctoPerf,
 - Upload your JMX Script to create the virtual user profiles,
-- [Create a scenario](https://doc.octoperf.com/runtime/) with the configuration you want,
-- Click on the [Export Scenario](https://doc.octoperf.com/runtime/edit-scenario/export-scenario-maven/) menu,
+- [Create a scenario](https://api.octoperf.com/doc/runtime/) with the configuration you want,
+- Click on the [Export Scenario](https://api.octoperf.com/doc/runtime/edit-scenario/integrations-automation/ci-cd/maven/) menu,
 - Click on the _Copy JSON_ button,
 - Paste the JSON content in a text file named `scenario.json`.
 
