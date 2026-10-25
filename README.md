@@ -9,7 +9,7 @@ OctoPerf Maven plugin has multiple advantages:
 
 The maven plugin is distributed via [OctoPerf Maven Repository](https://github.com/OctoPerf/maven-repository) hosted on GitHub.
 
-**Current version**: `2.7.0`
+**Current version**: `3.0.0`
 
 ## Compatibility
 
@@ -19,7 +19,7 @@ Maven Plugin version compatibility:
 
 |  Plugin Version |   OctoPerf Version      |
 |-------|-----|
-| `2.7.0+` |  `15.2.0+`; `import-k6` needs `<OCTOPERF_VERSION>+` |
+| `3.0.0+` |  `15.2.0+`; `import-k6` needs `<OCTOPERF_VERSION>+` |
 | `2.5.0+` |  `15.2.0+` |
 | `up to 2.4.0` | `up to 15.1.X` |
 
@@ -76,7 +76,7 @@ You should specify the version in your project's plugin configuration:
       <plugin>
         <groupId>com.octoperf</groupId>
         <artifactId>octoperf-maven-plugin</artifactId>
-        <version>2.7.0</version>
+        <version>3.0.0</version>
         <configuration>
           <!-- See configuration below -->
         </configuration>
@@ -405,14 +405,14 @@ First, wipe the project. That way, you won't have multiple virtual users or scen
 
 | Name | Type | Since | Description | Required | Default Value |
 |------|------|-------|-------------|----------|---------------|
-| `k6Entrypoint` | `String` | `2.7.0` | The K6 script run by the virtual user. | `false` | `${project.basedir}/script.js` |
-| `k6Modules` | `List<String>` | `2.7.0` | The other scripts the entrypoint imports, all under the entrypoint's folder. Each is uploaded under its path relative to that folder. | `false` | |
-| `providerName` | `String` | `2.7.0` | Name of an enabled load generator provider, as listed in the workspace. | `true` | |
-| `location` | `String` | `2.7.0` | Location of the provider every user profile runs from. | `true` | |
-| `scenarioName` | `String` | `2.7.0` | Name of the created scenario, the one `execute-scenario` runs by default. | `false` | `Scenario` |
-| `k6Executable` | `String` | `2.7.0` | The `k6` binary to run: a bare name is looked up on the `PATH`, a relative path is the project's. | `false` | `k6` |
-| `k6OptionsFile` | `String` | `2.7.0` | The output of `k6 inspect --execution-requirements`, to read instead of running `k6`. | `false` | |
-| `failOnUnconverted` | `boolean` | `2.7.0` | Fails the build when part of the load did not convert as it is. | `false` | `true` |
+| `k6Entrypoint` | `String` | `3.0.0` | The K6 script run by the virtual user. | `false` | `${project.basedir}/script.js` |
+| `k6Modules` | `List<String>` | `3.0.0` | The other scripts the entrypoint imports, all under the entrypoint's folder. Each is uploaded under its path relative to that folder. | `false` | |
+| `providerName` | `String` | `3.0.0` | Name of an enabled load generator provider, as listed in the workspace. | `true` | |
+| `location` | `String` | `3.0.0` | Location of the provider every user profile runs from. | `true` | |
+| `scenarioName` | `String` | `3.0.0` | Name of the created scenario, the one `execute-scenario` runs by default. | `false` | `Scenario` |
+| `k6Executable` | `String` | `3.0.0` | The `k6` binary to run: a bare name is looked up on the `PATH`, a relative path is the project's. | `false` | `k6` |
+| `k6OptionsFile` | `String` | `3.0.0` | The output of `k6 inspect --execution-requirements`, to read instead of running `k6`. | `false` | |
+| `failOnUnconverted` | `boolean` | `3.0.0` | Fails the build when part of the load did not convert as it is. | `false` | `true` |
 
 ### Example
 
@@ -457,8 +457,8 @@ Executes the scenario with name specified by `scenarioName` parameter (or the si
 | `testName` | `String` | `2.4.0` | Test name. If empty, scenario name is used. | `` | `` |
 | `isGeneratePdfReport` | `boolean` | `2.4.0` | Should the PDF report be generated and downloaded into `${project.basedir}/target/`. | `false` |  `false` |
 | `properties` | `Map<String, String>` | `2.5.0` | Map of properties to pass when executing the test | `false` |  `` |
-| `failIfNotFinished` | `boolean` | `2.7.0` | Fails the build when the test ends in `ERROR` or `ABORTED`. **Breaking**: up to 2.6.0, such a test ended the build in success. | `false` | `true` |
-| `timeoutMinutes` | `long` | `2.7.0` | Stops the test and fails the build when it has not ended after that many minutes. `0` waits forever, even on a state a newer server reports and this plugin does not know. | `false` | `0` |
+| `failIfNotFinished` | `boolean` | `3.0.0` | Fails the build when the test ends in `ERROR` or `ABORTED`. **Breaking**: up to 2.6.0, such a test ended the build in success. | `false` | `true` |
+| `timeoutMinutes` | `long` | `3.0.0` | Stops the test and fails the build when it has not ended after that many minutes. `0` waits forever, even on a state a newer server reports and this plugin does not know. | `false` | `0` |
 
 ### Example
 

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.octoperf</groupId>
   <artifactId>octoperf</artifactId>
-  <version>2.7.0</version>
+  <version>3.0.0</version>
   <packaging>pom</packaging>
   <name>OctoPerf Maven Plugin</name>
 
@@ -41,19 +41,19 @@
     <javax.annotation.version>1.3.2</javax.annotation.version>
     <jaxb.version>2.4.0-b180830.0359</jaxb.version>
     <joda-time.version>2.13.1</joda-time.version>
-    <junit.jupiter.version>5.11.4</junit.jupiter.version>
-    <junit.platform.version>1.11.4</junit.platform.version>
+    <junit.jupiter.version>6.0.3</junit.jupiter.version>
+    <junit.platform.version>6.0.3</junit.platform.version>
     <jsr305.version>3.0.2</jsr305.version>
-    <lombok.version>1.18.36</lombok.version>
+    <lombok.version>1.18.48</lombok.version>
     <maven.version>3.9.9</maven.version>
     <maven-plugins-annotations.version>3.15.1</maven-plugins-annotations.version>
     <maven.project.version>2.2.1</maven.project.version>
-    <mockito.version>5.15.2</mockito.version>
+    <mockito.version>5.23.0</mockito.version>
     <okhttp3.version>4.12.0</okhttp3.version>
     <retrofit2.version>2.11.0</retrofit2.version>
     <slf4j.version>2.0.16</slf4j.version>
-    <spring.version>6.2.7</spring.version>
-    <spring.boot.version>3.4.2</spring.boot.version>
+    <spring.version>7.0.9</spring.version>
+    <spring.boot.version>4.1.1</spring.boot.version>
   </properties>
 
   <dependencyManagement>
@@ -103,11 +103,6 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-mail</artifactId>
-        <version>${spring.boot.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-actuator-autoconfigure</artifactId>
         <version>${spring.boot.version}</version>
       </dependency>
       <dependency>
@@ -405,6 +400,7 @@
         <configuration>
           <release>${java.release.version}</release>
           <optimize>true</optimize>
+          <proc>full</proc>
         </configuration>
       </plugin>
       <plugin>
