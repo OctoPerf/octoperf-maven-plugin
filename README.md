@@ -19,7 +19,7 @@ Maven Plugin version compatibility:
 
 |  Plugin Version |   OctoPerf Version      |
 |-------|-----|
-| `3.0.0+` |  `15.2.0+`; `import-k6` needs `<OCTOPERF_VERSION>+` |
+| `3.0.0+` |  `15.2.0+`; `import-k6` needs `18.0.0+` |
 | `2.5.0+` |  `15.2.0+` |
 | `up to 2.4.0` | `up to 15.1.X` |
 
